@@ -8,5 +8,7 @@
             "email": "ruslan.kladko@dreamscapenetworks.com"
         }
     ],
-    "require": {}
+    "require": {
+        "twig/twig": "^1.42"
+    }
 }

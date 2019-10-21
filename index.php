@@ -37,5 +37,10 @@ define('DB_NAME', 'sYra_help');
 require_once COMMON_CLASSES_DIR . 'database.php';
 require_once COMMON_CLASSES_DIR . 'template.php';
 
+require __DIR__.'/../vendor/autoload.php';
+/* Twig */
+$twig_loader = new \Twig\Loader\FilesystemLoader('templates/_twig');
+$twig = new Twig\Environment($twig_loader);
+
 router::init();
 router::start();
