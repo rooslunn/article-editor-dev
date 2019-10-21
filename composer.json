@@ -1,0 +1,12 @@
+{
+    "name": "dreamscape/article-editor-dev",
+    "type": "project",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Ruslan Kladko",
+            "email": "ruslan.kladko@dreamscapenetworks.com"
+        }
+    ],
+    "require": {}
+}
