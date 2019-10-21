@@ -1,0 +1,233 @@
+*{
+    padding:0;
+    margin:0;
+}
+html, body{
+    height:100%;
+}
+body{
+    width:100%;
+    background-color:#5174a3;
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 14px;
+    color:#484848;
+}
+a:link, a:visited, a:active{
+    text-decoration: none;
+    color:#1589e1;
+}
+a:hover{
+    color:#1589e1;
+    text-decoration:underline;
+}
+button, input#image{
+    cursor:pointer;
+}
+a.button{
+    background-color: #F0F0F0;
+    border: 1px solid #484848;
+}
+
+#mainContainer{
+    width:1200px;
+    background-color:#fff;
+    margin:0 auto;
+    min-height:100%;
+    height:auto;
+}
+.left, .right{
+    display:inline-block;
+    float:left;
+}
+.left{
+    width:auto;
+}
+.right{
+    width:300px ;
+}
+fieldset{
+    border:0px;
+}
+.topContainer{
+    background-color:#e3effe;
+    padding:20px 25px;
+}
+.breadcrumbs{
+    display:inline-block; 
+    margin-left:25px;
+}
+input, select, button, input[type="file"], textarea, a.button{
+    padding:10px 15px;
+    font-size: 12px;
+    margin:7px 3px;
+}
+option{
+    padding:10px 15px;
+}
+textarea{
+    font-family: Verdana, Arial, sans-serif;
+}
+.editorContainer{
+    padding:30px 40px;
+    height:auto;
+    overflow:auto;
+}
+#search_article{
+    font-size:14px;
+}
+#title{
+    font-size:14px;
+    font-weight:bold;
+}
+#url{
+    width:437px;
+    max-width:437px;
+}
+#description{
+    height:36px;
+}
+#description, #editor{
+    width:750px;
+    max-width:750px;
+}
+#title{
+    width:748px;
+    max-width:748px;
+}
+#category{
+    width:191px;
+}
+#image{
+    vertical-align: top;
+    padding-left:0px !important;
+    margin-left:36px
+}
+#preview, #status, button{
+    width:150px;
+}
+#upload{
+    width:auto !important;
+    height:auto !important;
+    padding:2px 5px !important;
+    margin:0px;
+    margin-left:36px;
+}
+.imageName{
+    margin:15px 18px 5px 16px;
+    width:280px;
+    vertical-align: top;
+}
+.imageName li, .imageName p{
+    font-size:11px;
+}
+#editor{
+    height:500px;
+    max-height:500px;
+    overflow-y: scroll;
+}
+#save{
+    margin-left:118px;
+}
+.imageName li{
+    margin:5px 0;
+    position: relative;
+    text-indent: -15px;
+    list-style: none;
+}
+.empty{
+    height:50px;
+}
+.closeBtn{
+    display:inline-block;
+    float:right;
+    position: absolute;
+    top:0;
+    right:0;
+}
+.CodeMirror { 
+    border: 1px solid #A6A6A6;
+}
+#hold{
+    color:red;
+    font-weight:bold;
+}
+#published{
+    color:green;
+    font-weight:bold;
+}
+#finished{
+    color:black;
+    font-weight:bold;
+}
+#unpublished{
+    color:orange;
+    font-weight:bold;
+}
+#delete{
+    color:grey;
+    font-weight:bold;
+}
+#infoBox{
+    background-color:#e3effe;
+    padding:20px 25px;
+    margin:7px 10px;
+    width:290px;
+    font-size:11px;
+}
+.tdTitle{
+    text-align:left;
+    width:80px;
+    font-weight:bold;
+}
+.tdInfo{
+    text-align:right;
+}
+table.specialTags{
+    margin:7px 10px;
+    font-size:11px;
+    width:320px;
+    padding:0px 0 0 25px;
+}
+table.specialTags td:last-child{
+    text-align:right;
+}
+#fileManagment{
+    margin-left:11px;
+    margin-top:14px;
+}
+#specialTags{
+    margin-top:52px;
+}
+#count_symb_description{
+    float:right;
+    margin-right:10px;
+    margin-top:-10px;
+    font-size:11px;
+}
+fieldset.editor{
+    margin-top:10px;
+}
+/*-------------- ERROR WINDOW -----------------------------------*/
+#errorWindow{
+    position:absolute;
+    right:0;
+    top:0;
+    margin-right:15px;
+    width:320px;
+    height:auto;
+    background-color:#fff;
+}
+#errorWindow .topContainer{
+    background-color:#ce4d4d;
+    color:#fff;
+}
+.errorContainer{
+    padding:20px 25px;
+}
+.errorContainer ul{
+    margin:10px 0 25px 20px;
+}
+.errorContainer ul:last-child{
+    margin:10px 0 10px 20px;
+}
+/*-------------- /ERROR WINDOW -----------------------------------*/

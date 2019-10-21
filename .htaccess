@@ -1,0 +1,113 @@
+RewriteEngine On
+RewriteCond %{SCRIPT_FILENAME} !-f
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !^/public/.*$
+RewriteRule ^(.*)$ index.php/$1
+
+# Apache 2.4
+<IfModule mod_authz_core.c>
+    <Files .htaccess>
+    	Require all denied
+    </Files>
+
+    #sysweb
+    Require host sysweb.development.au.syrahost.com
+
+    # proxy.staging
+    Require ip 10.16.6.4
+
+    #Local IPs for all offices
+    Require ip 192.168.0.0/16
+
+    #Perth Office
+    Require ip 27.54.95.242
+
+    #New IP range for the Perth office
+    Require ip 103.67.248.0/28
+
+    #Gavin
+    Require ip 172.16.1.74
+
+    #Philippines
+    Require ip 103.52.62.0/24
+    Require ip 2001:df2:e400::/48
+
+    #AU VPN - Sysadmins
+    Require ip 10.254.8.0/24
+    #AU VPN - Developers
+    Require ip 10.254.9.0/24
+    #AU VPN - General
+    Require ip 10.254.10.0/24
+    #UK VPN - Sysadmins
+    Require ip 10.254.12.0/24
+    #UK VPN - Developers
+    Require ip 10.254.13.0/24
+    #UK VPN - General
+    Require ip 10.254.14.0/24
+
+	#New AU VPN IP range
+	Require ip 172.21.128.0/20
+	#New UK VPN IP range
+	Require ip 172.20.128.0/20
+
+    #Ukraine
+    Require ip 94.45.40.150
+    Require ip 193.239.152.233
+
+    #THE WORLD!
+    Require all denied
+</IfModule>
+
+# Apache 2.2
+<IfModule !mod_authz_core.c>
+    <Files .htaccess>
+    	deny from all
+    </Files>
+
+    #sysweb
+    allow from sysweb.development.au.syrahost.com
+
+    # proxy.staging
+    allow from 10.16.6.4
+
+    #Local IPs for all offices
+    allow from 192.168.0.0/16
+
+    #Perth Office
+    allow from 27.54.95.242
+
+    #New IP range for the Perth office
+    allow from 103.67.248.0/28
+
+    #Gavin
+    allow from 172.16.1.74
+
+    #Philippines
+    allow from 103.52.62.0/24
+    allow from 2001:df2:e400::/48
+
+    #AU VPN - Sysadmins
+    allow from 10.254.8.0/24
+    #AU VPN - Developers
+    allow from 10.254.9.0/24
+    #AU VPN - General
+    allow from 10.254.10.0/24
+    #UK VPN - Sysadmins
+    allow from 10.254.12.0/24
+    #UK VPN - Developers
+    allow from 10.254.13.0/24
+    #UK VPN - General
+    allow from 10.254.14.0/24
+
+	#New AU VPN IP range
+	allow from 172.21.128.0/20
+	#New UK VPN IP range
+	allow from 172.20.128.0/20
+
+    #Ukraine
+    allow from 94.45.40.150
+    allow from 193.239.152.233
+
+    #THE WORLD!
+    deny from all
+</IfModule>

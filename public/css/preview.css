@@ -1,0 +1,42 @@
+.container {
+    margin: 0 auto;
+    width: 940px;
+}
+
+p, ul, ol, td, div {color: #484848; font-size: 11px; font-family: Verdana, Arial, sans-serif; line-height: 15px; }
+
+li { display: list-item; text-align: -webkit-match-parent; }
+
+input, textarea { width: 100%; }
+
+textarea { height: 400px; }
+
+h1, p.pageText { text-align: center; }
+
+h1 { margin-bottom: 25px; }
+
+p.pageText { margin-bottom: 45px; }
+
+h2.preview { margin: 40px 0; }
+
+.controls { text-align: right; }
+
+.previewSection { border-top: 1px dashed #ddd; margin-top: 30px; }
+
+.content { width: 1000px; }
+
+.articleWrapper { width: 834px; margin-left: 44px; }
+
+.articleWrapper h2 { padding: 0 !important; margin-bottom: 4px; }
+
+.allQuestions h2, .articleWrapper h2 { line-height: 20px; font-family: arial, sans-serif; font-size: 20px; font-weight: bold; color: #484848; padding: 0 46px; }
+
+.articleContent p { font-family: arial, sans-serif; font-size: 12px; line-height: 20px; color: #484848; }
+
+ol { list-style: decimal; margin-left: 30px; margin-bottom: 15px; }
+
+.articleContent { margin-left: 38px; }
+
+.upload-xml { border-top: 1px dashed #ccc; margin-top: 10px; }
+.upload-xml .controls {text-align:left}
+#xml-loader { width: 0; height: 0; border: 0; }
