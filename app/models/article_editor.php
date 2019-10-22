@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * todo: globalScope: status_id <> DELETED
+ */
+
 class article_editor {
 
 	/**
@@ -815,7 +819,7 @@ class article_editor {
 
     public function get_articles_statuses_amount_dev()
     {
-        $query = '
+        $query = "
             select
                 a.status_id,
                 gs.status_name,
@@ -823,15 +827,35 @@ class article_editor {
                 count(a.status_id) as status_count
             from
                 article a left join generic_status gs on a.status_id = gs.status_id
+            where
+                a.status_id != {$this->article_statuses['delete']} 
             group by
                 a.status_id,
                 gs.status_name,
                 gs.status_color;
-        ';
+        ";
 
         $result = $this->sYra_help->query($query);
         return $result->fetchAll();
 	}
+
+    public function get_articles_tagged_count_dev()
+    {
+        $query = "
+            SELECT 
+                1004 as status_id, 'Tagged' as status_name, 'black' as status_color,
+                COUNT(DISTINCT a.article_id) AS tagged
+            FROM tag_to_article tta
+                LEFT JOIN article a ON tta.article_id = a.article_id
+            WHERE a.status_id != {$this->article_statuses['delete']}
+        ";
+        return $this->sYra_help->query($query)->fetch();
+	}
+
+    public function get_article_comments_count_dev() {
+        $query = "SELECT 1001 as status_id, 'Comments' as status_name, '#9E15E1' as status_color, COUNT(comment_id) as status_count FROM article_comments;";
+        return $this->sYra_help->query($query)->fetch();
+    }
 
 	public function get_articles_statuses_amount() {
 		$query = "	SELECT
@@ -1005,7 +1029,7 @@ class article_editor {
 	 * @return string
 	 */
 	public function get_article_comments_count() {
-		$query = "SELECT COUNT(comment_id) FROM article_comments";
+		$query = 'SELECT COUNT(comment_id) FROM article_comments';
 		return $this->sYra_help->query($query)->fetchColumn();
 	}
 

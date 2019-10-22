@@ -64,11 +64,12 @@ class article_editor_controller {
 		} else {
 		    $current_section_name = $this->resolveSectionName(input::get('section_name'));
 		    $sections = $this->article_editor->get_sections_list();
-		    
+
+		    /* todo: Totals repository */
 		    $totals = $this->article_editor->get_articles_statuses_amount_dev();
-//            $totals['untagged'] = ($totals['published'] + $totals['unpublished'] + $totals['hold'] + $totals['finished'] - $totals['tagged']);
-//			$totals['comments_count'] = $this->article_editor->get_article_comments_count();
-            
+		    $totals[] = $this->article_editor->get_articles_tagged_count_dev();
+            $totals[] = $this->article_editor->get_article_comments_count();
+
             echo app('twig')->render('index.twig', compact('current_section_name', 'sections', 'totals'));
 
 //			$this->_template->loadTemplateFile('templates/index.tpl');
