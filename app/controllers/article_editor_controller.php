@@ -69,7 +69,7 @@ class article_editor_controller {
             $totals['untagged'] = ($totals['published'] + $totals['unpublished'] + $totals['hold'] + $totals['finished'] - $totals['tagged']);
 			$totals['comments_count'] = $this->article_editor->get_article_comments_count();
             
-            echo app('twig')->render('index', compact('current_section_name', 'sections', 'totals'));
+            echo app('twig')->render('index.twig', compact('current_section_name', 'sections', 'totals'));
 
 //			$this->_template->loadTemplateFile('templates/index.tpl');
 //			$this->_template->setVariable('current_section_name', $replace);
