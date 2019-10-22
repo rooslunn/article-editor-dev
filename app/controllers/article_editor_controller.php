@@ -68,7 +68,7 @@ class article_editor_controller {
 		    /* todo: Totals repository */
 		    $totals = $this->article_editor->get_articles_statuses_amount_dev();
 		    $totals[] = $this->article_editor->get_articles_tagged_count_dev();
-            $totals[] = $this->article_editor->get_article_comments_count();
+            $totals[] = $this->article_editor->get_article_comments_count_dev();
 
             echo app('twig')->render('index.twig', compact('current_section_name', 'sections', 'totals'));
 
