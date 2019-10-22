@@ -817,37 +817,25 @@ class article_editor {
 		return $data;
 	}
 
-    public function get_articles_statuses_amount_dev()
+    public function get_articles_untagged_count_dev($count)
     {
-        $query = "
-            select
-                a.status_id,
-                gs.status_name,
-                gs.status_color,
-                count(a.status_id) as status_count
-            from
-                article a left join generic_status gs on a.status_id = gs.status_id
-            where
-                a.status_id != {$this->article_statuses['delete']} 
-            group by
-                a.status_id,
-                gs.status_name,
-                gs.status_color;
-        ";
-
-        $result = $this->sYra_help->query($query);
-        return $result->fetchAll();
+        return [
+            'status_id' => '1005',
+            'status_name' => 'Missing Tags',
+            'status_count' => $count,
+            'status_color' => '',
+        ];
 	}
 
     public function get_articles_tagged_count_dev()
     {
         $query = "
-            SELECT 
-                1004 as status_id, 'Tagged' as status_name, 'black' as status_color,
-                COUNT(DISTINCT a.article_id) AS status_count
-            FROM tag_to_article tta
-                LEFT JOIN article a ON tta.article_id = a.article_id
-            WHERE a.status_id != {$this->article_statuses['delete']}
+            select 
+                '1004' as status_id, 'tagged' as status_name, 'black' as status_color,
+                count(distinct a.article_id) as status_count
+            from tag_to_article tta
+                left join article a on tta.article_id = a.article_id
+            where a.status_id != {$this->article_statuses['delete']}
         ";
         return $this->sYra_help->query($query)->fetch();
 	}

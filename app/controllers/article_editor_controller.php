@@ -1,5 +1,7 @@
 <?php
 
+use Dreamscape\Repository\ArticleCirlcesRepository;
+
 class article_editor_controller {
 
     const SEARCH_RESULTS = 'Search Results';
@@ -65,12 +67,21 @@ class article_editor_controller {
 		    $current_section_name = $this->resolveSectionName(input::get('section_name'));
 		    $sections = $this->article_editor->get_sections_list();
 
-		    /* todo: Totals repository */
-		    $totals = $this->article_editor->get_articles_statuses_amount_dev();
-		    $totals[] = $this->article_editor->get_articles_tagged_count_dev();
-            $totals[] = $this->article_editor->get_article_comments_count_dev();
+//		    /* todo: Totals repository */
+//		    $circles = $this->article_editor->get_articles_statuses_amount_dev();
 
-            echo app('twig')->render('index.twig', compact('current_section_name', 'sections', 'totals'));
+//		    $cirlces_current_count = array_sum(array_pluck($circles, 'status_count'));
+//		    $tagged_count_item = $this->article_editor->get_articles_tagged_count_dev();
+//		    $tagged_count = array_key_exists('status_count', $tagged_count_item)
+//                ? $cirlces_current_count - $tagged_count_item['status_count']
+//                : '?';
+//
+//		    $circles[] = $this->article_editor->get_articles_untagged_count_dev($tagged_count);
+//            $circles[] = $this->article_editor->get_article_comments_count_dev();
+
+            $circlesRepository = new ArticleCirlcesRepository(app('db'));
+            $circles = $circlesRepository->all();
+            echo app('twig')->render('index.twig', compact('current_section_name', 'sections', 'circles'));
 
 //			$this->_template->loadTemplateFile('templates/index.tpl');
 //			$this->_template->setVariable('current_section_name', $replace);

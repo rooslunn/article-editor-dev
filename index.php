@@ -40,9 +40,18 @@ require_once COMMON_CLASSES_DIR . 'template.php';
 /* Composer */
 require __DIR__.'/vendor/autoload.php';
 
+/*
+ * Shared DB
+ */
+app()->instance('db', new Database(DB_SERVER, DB_SERVER_USERNAME, DB_SERVER_PASSWORD, DB_NAME));
+
 /* Twig */
 $twig_loader = new \Twig\Loader\FilesystemLoader('templates/_twig');
 app()->instance('twig', new Twig\Environment($twig_loader));
 
+/*
+ * Full Steam Ahead!
+ */
+/* todo: migrate to Kernel */
 router::init();
 router::start();
