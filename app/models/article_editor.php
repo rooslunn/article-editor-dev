@@ -844,7 +844,7 @@ class article_editor {
         $query = "
             SELECT 
                 1004 as status_id, 'Tagged' as status_name, 'black' as status_color,
-                COUNT(DISTINCT a.article_id) AS tagged
+                COUNT(DISTINCT a.article_id) AS status_count
             FROM tag_to_article tta
                 LEFT JOIN article a ON tta.article_id = a.article_id
             WHERE a.status_id != {$this->article_statuses['delete']}
