@@ -64,8 +64,8 @@ final class ArticleCirlcesRepository extends Repository
         $query = "
             select 
                 {$circle_titles['status_id']} as status_id, 
-                {$circle_titles['status_name']} as status_name, 
-                {$circle_titles['status_color']} as status_color,
+                '{$circle_titles['status_name']}' as status_name, 
+                '{$circle_titles['status_color']}' as status_color,
                 count(distinct a.article_id) as status_count
             from tag_to_article tta
                 left join article a on tta.article_id = a.article_id
@@ -92,11 +92,11 @@ final class ArticleCirlcesRepository extends Repository
         $query = "
             select 
                 {$circle_titles['status_id']} as status_id, 
-                {$circle_titles['status_name']} as status_name, 
-                {$circle_titles['status_color']} as status_color, 
+                '{$circle_titles['status_name']}' as status_name, 
+                '{$circle_titles['status_color']}' as status_color, 
                 count(comment_id) as status_count 
             from article_comments;";
-        $result = $this->sYra_help->query($query)->fetch();
+        $result = $this->db()->query($query)->fetch();
         return $this->item($result);
     }
 

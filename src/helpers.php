@@ -26,3 +26,15 @@ if (! function_exists('array_pluck')) {
         }, $items);
     }
 }
+
+if (! function_exists('parenthesised')) {
+    function parenthesised($str) {
+        return '(' . $str . ')';
+    }
+}
+
+if (! function_exists('display')) {
+    function display($template, array $data) {
+        echo app('twig')->render($template.'.twig', $data);
+    }
+}

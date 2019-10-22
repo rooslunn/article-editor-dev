@@ -1,6 +1,8 @@
 <?php
 
 use Dreamscape\Repository\ArticleCirlcesRepository;
+use Dreamscape\Repository\ArticleRepository;
+use Dreamscape\Repository\Repository;
 
 class article_editor_controller {
 
@@ -67,27 +69,16 @@ class article_editor_controller {
 		    $current_section_name = $this->resolveSectionName(input::get('section_name'));
 		    $sections = $this->article_editor->get_sections_list();
 
-//		    /* todo: Totals repository */
-//		    $circles = $this->article_editor->get_articles_statuses_amount_dev();
-
-//		    $cirlces_current_count = array_sum(array_pluck($circles, 'status_count'));
-//		    $tagged_count_item = $this->article_editor->get_articles_tagged_count_dev();
-//		    $tagged_count = array_key_exists('status_count', $tagged_count_item)
-//                ? $cirlces_current_count - $tagged_count_item['status_count']
-//                : '?';
-//
-//		    $circles[] = $this->article_editor->get_articles_untagged_count_dev($tagged_count);
-//            $circles[] = $this->article_editor->get_article_comments_count_dev();
-
             $circlesRepository = new ArticleCirlcesRepository(app('db'));
             $circles = $circlesRepository->all();
-            echo app('twig')->render('index.twig', compact('current_section_name', 'sections', 'circles'));
 
-//			$this->_template->loadTemplateFile('templates/index.tpl');
-//			$this->_template->setVariable('current_section_name', $replace);
-//			$this->parse_sections()->show_article_editor_header();
-//			$this->get_new_articles('new', 5);
-//			$this->get_new_articles('last', 5);
+            $articles = new ArticleRepository(app('db'));
+            $recently_inserted = $articles->recenltyInserted(Repository::DEFAULT_QUERY_LIMIT);
+            $recently_updated = $articles->recenltyUpdated(Repository::DEFAULT_QUERY_LIMIT);
+
+            display('index',
+                compact('current_section_name', 'sections', 'circles', 'recently_inserted', 'recently_updated')
+            );
 		}
 
 		if (crms_user::check_current_permissions('ARTICLE_TOOL_PUBLISHER_ROLE')) {

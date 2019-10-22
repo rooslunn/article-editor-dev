@@ -1,0 +1,12 @@
+{% for row in articles %}
+    <table class="articleTable" cellspacing="5" width="100%">
+        <tbody>
+        <tr>
+            <td width="55px" class="id" style="font-size:11px;"><a target="_blank" href="edit?article_id={{ row.article_id }}">{{ row.article_id }}</a></td>
+            <td class="name"><a target="_blank" href="{{ row.article_url }}/?debug=1">{{ row.article_title }}</a></td>
+            <td width="120px" class="date" style="font-size:11px;">{{ row.date_scanned }}</td>
+            <td width="120px" id="{{ row.status|lower }}" class="status" style="font-size:11px;">{{ row.status }}</td>
+        </tr>
+        </tbody>
+    </table>
+{% endfor %}

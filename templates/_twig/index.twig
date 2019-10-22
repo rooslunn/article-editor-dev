@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block article_editor_header %}
-    {%  for item in totals %}
+    {%  for item in circles %}
     <div class="circle">
         <div class="insideCircle">
             <h2>{{ item.status_count }}</h2>
@@ -21,4 +21,27 @@
         </div>
     </div>
     {% endfor %}
+{% endblock %}
+
+{% block new_articles_row %}
+    <table class="articleTable" cellspacing="5" width="100%">
+        <tbody>
+        {% for row in new_articles %}
+        <tr>
+            <td width="55px" class="id" style="font-size:11px;"><a target="_blank" href="edit?article_id={article_id}">{article_id}</a></td>
+            <td class="name"><a target="_blank" href="{article_url}/?debug=1">{article_title}</a></td>
+            <td width="120px" class="date" style="font-size:11px;">{date_scanned}</td>
+            <td width="120px" id="{css_status_id}" class="status" style="font-size:11px;">{status}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block recently_inserted_articles_row %}
+    {% include 'component/article_table_index.twig' with {'articles': recently_inserted} %}
+{% endblock %}
+
+{% block recently_updated_articles_row %}
+    {% include 'component/article_table_index.twig' with {'articles': recently_updated} %}
 {% endblock %}

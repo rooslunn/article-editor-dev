@@ -8,6 +8,8 @@ abstract class Repository
     /* @var DatabaseContract */
     private $db;
 
+    const DEFAULT_QUERY_LIMIT = 5;
+
     public function __construct(DatabaseContract $db)
     {
         $this->db = $db;

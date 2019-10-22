@@ -36,37 +36,17 @@
 
                 <div class="new-articleList">
                     <h2 class="subTitles-homePage"><a href="./new_articles_list">New Articles</a></h2>
-
                     <!-- BEGIN new_articles_row -->
-                    {% block new_articles_row %}
-                    <table class="articleTable" cellspacing="5" width="100%">
-                        <tbody>
-                            <tr>
-                                <td width="55px" class="id" style="font-size:11px;"><a target="_blank" href="edit?article_id={article_id}">{article_id}</a></td>
-                                <td class="name"><a target="_blank" href="{article_url}/?debug=1">{article_title}</a></td>
-                                <td width="120px" class="date" style="font-size:11px;">{date_scanned}</td>
-                                <td width="120px" id="{css_status_id}" class="status" style="font-size:11px;">{status}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    {% block recently_inserted_articles_row %}
                     {% endblock %}
                     <!-- END new_articles_row -->
                 </div>
 
                 <div class="lastUpdated-articleList">
                     <h2 class="subTitles-homePage"><a href="./last_updated_articles_list">Last Updated</a></h2>
-
                     <!-- BEGIN last_updated_articles_row -->
-                    <table class="articleTable" cellspacing="5" width="100%">
-                        <tbody>
-                            <tr>
-                                <td width="55px" class="id" style="font-size:11px;"><a target="_blank" href="edit?article_id={article_id}">{article_id}</a></td>
-                                <td class="name"><a target="_blank" href="{article_url}/?debug=1">{article_title}</a></td>
-                                <td width="120px" class="date" style="font-size:11px;">{date_scanned}</td>
-                                <td width="120px" id="{css_status_id}" class="status" style="font-size:11px;">{status}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    {% block recently_updated_articles_row %}
+                    {% endblock %}
                     <!-- END last_updated_articles_row -->
                 </div>
             </div>

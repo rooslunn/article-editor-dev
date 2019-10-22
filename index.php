@@ -1,4 +1,5 @@
 <?php
+
 error_reporting(E_ALL);
 
 /* Loading configs */
@@ -34,7 +35,7 @@ define('UPLOAD_DIR', 'public/temp/');
 define('DB_NAME', 'sYra_help');
 
 /* Loading externals */
-require_once COMMON_CLASSES_DIR . 'database.php';
+//require_once COMMON_CLASSES_DIR . 'database.php';
 require_once COMMON_CLASSES_DIR . 'template.php';
 
 /* Composer */
@@ -43,7 +44,7 @@ require __DIR__.'/vendor/autoload.php';
 /*
  * Shared DB
  */
-app()->instance('db', new Database(DB_SERVER, DB_SERVER_USERNAME, DB_SERVER_PASSWORD, DB_NAME));
+app()->instance('db', new \Dreamscape\Database\DatabaseContracted(DB_SERVER, DB_SERVER_USERNAME, DB_SERVER_PASSWORD, DB_NAME));
 
 /* Twig */
 $twig_loader = new \Twig\Loader\FilesystemLoader('templates/_twig');
