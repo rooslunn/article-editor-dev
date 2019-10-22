@@ -4,24 +4,21 @@
     {% for item in sections %}
     <li>
         <a href="?section_name={{ item.section_title|replace(' ', '-') }}">
-            {{ item.section_title }}<p style="font-size:11px; display:inline;">({{ item.total }})</p>
+            {{ item.section_title }} <p style="font-size:11px; display:inline;">({{ item.total }})</p>
         </a>
     </li>
     {% endfor %}
 {% endblock %}
 
 {% block article_editor_header %}
-    {%  for key in totals|keys %}
+    {%  for item in totals %}
     <div class="circle">
         <div class="insideCircle">
-            <h2>{{ totals.key }}</h2>
-            <a href="./article_list_status?status={{ key }}" id="{css_status_id}" class="status" style="color: green">{{ key|capitalize }}</a>
+            <h2>{{ item.status_name }}</h2>
+            <a href="./article_list_status?status={{ item.status_name }}"
+               id="{{ item.status_id }}" class="status" style="color: {{ item.status_color }}">{{ item.status_count }}
+            </a>
         </div>
     </div>
     {% endfor %}
-    <div class="circle">
-        <div class="insideCircle"><h2>{unpublished}</h2><a href="./article_list_status?status=unpublished"  id="{css_status_id}" class="status" style="color: orange">Unpublished</a></div></div>
-    <div class="circle"><div class="insideCircle"><h2>{finished}</h2><a href="./article_list_status?status=finished"  id="{css_status_id}" class="status" style="color: black">Finished</a></div></div>
-    <div class="circle"><div class="insideCircle"><h2>{hold}</h2><a href="./article_list_status?status=hold"  id="{css_status_id}" class="status" style="color: red">Hold</a></div></div>
-    <div class="circle helpful" style="margin-left:15px;"><div class="insideCircle"><h2>{untagged}</h2><p id="{css_status_id}" class="status"><a href="articles_missing_tags_list">Missing Tags</a></p></div></div>
 {% endblock %}

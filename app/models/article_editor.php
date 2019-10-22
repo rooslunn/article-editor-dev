@@ -813,6 +813,26 @@ class article_editor {
 		return $data;
 	}
 
+    public function get_articles_statuses_amount_dev()
+    {
+        $query = '
+            select
+                a.status_id,
+                gs.status_name,
+                gs.status_color,
+                count(a.status_id) as status_count
+            from
+                article a left join generic_status gs on a.status_id = gs.status_id
+            group by
+                a.status_id,
+                gs.status_name,
+                gs.status_color;
+        ';
+
+        $result = $this->sYra_help->query($query);
+        return $result->fetch();
+	}
+
 	public function get_articles_statuses_amount() {
 		$query = "	SELECT
 						(
