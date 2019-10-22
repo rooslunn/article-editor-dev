@@ -1,7 +1,9 @@
 <?php
 
 class article_editor_controller {
-	/**
+
+    const SEARCH_RESULTS = 'Search Results';
+    /**
 	 * @var template - Sigma template object
 	 */
 	private $_template;
@@ -44,7 +46,7 @@ class article_editor_controller {
 			if (input::get('section_name') != '') {
 				$replace = preg_replace('/\-/', ' ', input::get('section_name'));
 			} else {
-				$replace = 'Search Results';
+				$replace = self::SEARCH_RESULTS;
 			}
 
 			$this->_template->setVariable('current_section_name', $replace);
@@ -53,24 +55,27 @@ class article_editor_controller {
 			if (input::get('section_name') != '') {
 				$replace = preg_replace('/\-/', ' ', input::get('section_name'));
 			} else {
-				$replace = 'Search Results';
+				$replace = self::SEARCH_RESULTS;
 			}
 
 			$this->_template->loadTemplateFile('templates/article_list.tpl');
 			$this->_template->setVariable('current_section_name', $replace);
 			$this->parse_sections()->get_articles();
 		} else {
-			if (input::get('section_name') != '') {
-				$replace = preg_replace('/\-/', ' ', input::get('section_name'));
-			} else {
-				$replace = 'Search Results';
-			}
+		    $current_section_name = $this->resolveSectionName(input::get('section_name'));
+		    $sections = $this->article_editor->get_sections_list();
+		    
+		    $totals = $this->article_editor->get_articles_statuses_amount();
+            $totals['untagged'] = ($totals['published'] + $totals['unpublished'] + $totals['hold'] + $totals['finished'] - $totals['tagged']);
+			$totals['comments_count'] = $this->article_editor->get_article_comments_count();
+            
+            echo app('twig')->render('index', compact('current_section_name', 'sections', 'totals'));
 
-			$this->_template->loadTemplateFile('templates/index.tpl');
-			$this->_template->setVariable('current_section_name', $replace);
-			$this->parse_sections()->show_article_editor_header();
-			$this->get_new_articles('new', 5);
-			$this->get_new_articles('last', 5);
+//			$this->_template->loadTemplateFile('templates/index.tpl');
+//			$this->_template->setVariable('current_section_name', $replace);
+//			$this->parse_sections()->show_article_editor_header();
+//			$this->get_new_articles('new', 5);
+//			$this->get_new_articles('last', 5);
 		}
 
 		if (crms_user::check_current_permissions('ARTICLE_TOOL_PUBLISHER_ROLE')) {
@@ -127,7 +132,7 @@ class article_editor_controller {
 			if (input::get('section_name') != '') {
 				$replace = preg_replace('/\-/', ' ', input::get('section_name'));
 			} else {
-				$replace = 'Search Results';
+				$replace = self::SEARCH_RESULTS;
 			}
 
 			$this->_template->loadTemplateFile('templates/article_list.tpl');
@@ -156,7 +161,7 @@ class article_editor_controller {
 			if (input::get('section_name') != '') {
 				$replace = preg_replace('/\-/', ' ', input::get('section_name'));
 			} else {
-				$replace = 'Search Results';
+				$replace = self::SEARCH_RESULTS;
 			}
 
 			$this->_template->loadTemplateFile('templates/article_list.tpl');
@@ -185,7 +190,7 @@ class article_editor_controller {
 			if (input::get('section_name') != '') {
 				$replace = preg_replace('/\-/', ' ', input::get('section_name'));
 			} else {
-				$replace = 'Search Results';
+				$replace = self::SEARCH_RESULTS;
 			}
 
 			$this->_template->loadTemplateFile('templates/article_list.tpl');
@@ -231,7 +236,7 @@ class article_editor_controller {
 			if (input::get('section_name') != '') {
 				$replace = preg_replace('/\-/', ' ', input::get('section_name'));
 			} else {
-				$replace = 'Search Results';
+				$replace = self::SEARCH_RESULTS;
 			}
 
 			$this->_template->loadTemplateFile('templates/article_list.tpl');
@@ -672,6 +677,19 @@ class article_editor_controller {
 			$this->_template->parseCurrentBlock();
 		}
 	}
+
+    /**
+     * @param $section_name
+     * @return string|string[]|null
+     */
+    private function resolveSectionName($section_name)
+    {
+        $replace = self::SEARCH_RESULTS;
+        if (empty($section_name)) {
+            $replace = preg_replace('/-/', ' ', $section_name);
+        }
+        return $replace;
+    }
 
 
 }

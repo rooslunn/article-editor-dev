@@ -10,5 +10,22 @@
     ],
     "require": {
         "twig/twig": "^1.42"
+    },
+    "autoload": {
+        "files": ["src/helpers.php"],
+        "psr-4": {
+            "Dreamscape\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "files": ["src/helpers.php"],
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "optimize-autoloader": true
     }
 }

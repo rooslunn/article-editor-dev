@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Article List</title>
+        <link rel="stylesheet" href="public/css/article-list.css" type="text/css"/>
+        <script src="public/js/jquery.min.js"></script>
+    </head>
+    <body>
+        <div id="mainContainer">
+            <div class="articleListTitle">
+                <div class="articleId-searchbar">
+                    <input type="search" placeholder="Search Article Id" id="search_article" onkeypress="return search(event);"/>
+                </div>
+                <ul>
+                    <li class="homeLink">
+                        <a href="./">Home Page</a>
+                    </li>
+                    <!-- BEGIN article_row_nav -->
+                    {% block article_row_nav %}
+                    {% endblock %}
+                    <!-- END article_row_nav -->
+                </ul>
+            </div>
+
+            <div class="articleLinks-container">
+
+                <h1>Doc Editor</h1>
+
+<!------------------------ CIRCLES ----------------------------------------------->
+                <!-- BEGIN article_editor_header -->
+                {% block article_editor_header %}
+                {% endblock %}
+                 <!-- END article_editor_header -->
+
+                <div class="circle">
+					<div class="insideCircle"><h2>{comments_count}</h2><a href="article_comments" class="status" style="color: #9E15E1">Comments</a></div>
+				</div>
+<!------------------------ /CIRCLES ----------------------------------------------->
+
+                <div class="new-articleList">
+                    <h2 class="subTitles-homePage"><a href="./new_articles_list">New Articles</a></h2>
+
+                    <!-- BEGIN new_articles_row -->
+                    {% block new_articles_row %}
+                    <table class="articleTable" cellspacing="5" width="100%">
+                        <tbody>
+                            <tr>
+                                <td width="55px" class="id" style="font-size:11px;"><a target="_blank" href="edit?article_id={article_id}">{article_id}</a></td>
+                                <td class="name"><a target="_blank" href="{article_url}/?debug=1">{article_title}</a></td>
+                                <td width="120px" class="date" style="font-size:11px;">{date_scanned}</td>
+                                <td width="120px" id="{css_status_id}" class="status" style="font-size:11px;">{status}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    {% endblock %}
+                    <!-- END new_articles_row -->
+                </div>
+
+                <div class="lastUpdated-articleList">
+                    <h2 class="subTitles-homePage"><a href="./last_updated_articles_list">Last Updated</a></h2>
+
+                    <!-- BEGIN last_updated_articles_row -->
+                    <table class="articleTable" cellspacing="5" width="100%">
+                        <tbody>
+                            <tr>
+                                <td width="55px" class="id" style="font-size:11px;"><a target="_blank" href="edit?article_id={article_id}">{article_id}</a></td>
+                                <td class="name"><a target="_blank" href="{article_url}/?debug=1">{article_title}</a></td>
+                                <td width="120px" class="date" style="font-size:11px;">{date_scanned}</td>
+                                <td width="120px" id="{css_status_id}" class="status" style="font-size:11px;">{status}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- END last_updated_articles_row -->
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            function search(e) {
+                if (e.keyCode == 13) {
+                    var article_id = document.getElementById('search_article').value;
+                    window.location.href = '?search&article_id=' + article_id;
+                }
+            }
+            function set_status(status) {
+                var articles = $('.article_status:checked');
+                var values = [];
+                for (var i = 0; i < articles.length; i++ ) {
+                    values.push($(articles[i]).val());
+                }
+                $.ajax({
+                    url: 'ajax/update_status/',
+                    type: 'post',
+                    data: {
+                        values: values,
+                        status: status
+                    },
+                    success: function(result) {
+                        if (result == 1) {
+                            location.reload()
+                        } else {
+                            alert('Database error!');
+                        }
+                    }
+                });
+            }
+
+			$(function(){
+				$('#selectAll').change(function(){
+					console.log('clicked');
+					$('input.article_status[type=checkbox]').prop('checked', $(this).is(':checked'));
+				});
+			});
+        </script>
+    </body>
+</html>
