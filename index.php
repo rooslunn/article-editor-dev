@@ -38,7 +38,7 @@ require_once COMMON_CLASSES_DIR . 'database.php';
 require_once COMMON_CLASSES_DIR . 'template.php';
 
 /* Composer */
-require __DIR__.'/../vendor/autoload.php';
+require __DIR__.'/vendor/autoload.php';
 
 /* Twig */
 $twig_loader = new \Twig\Loader\FilesystemLoader('templates/_twig');
