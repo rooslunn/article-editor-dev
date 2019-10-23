@@ -39,8 +39,24 @@ class article_editor_controller {
 		$this->article_content_issues = new help_section\article_content_issues();
 	}
 
-	/**
-	 * Main index page
+    public function index_dev()
+    {
+        $circlesRepository = new ArticleCirlcesRepository(app('db'));
+        $circles = $circlesRepository->all();
+
+        $articles = new ArticleRepository(app('db'));
+        $recently_inserted = $articles->recenltyInserted(Repository::DEFAULT_QUERY_LIMIT);
+        $recently_updated = $articles->recenltyUpdated(Repository::DEFAULT_QUERY_LIMIT);
+
+        $sections = $this->article_editor->get_sections_list();
+
+        display('index',
+            compact('sections', 'circles', 'recently_inserted', 'recently_updated')
+        );
+    }
+
+    /**
+     * Main index page
 	 * @return void
 	 */
 	public function index() {

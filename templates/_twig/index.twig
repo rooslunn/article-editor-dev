@@ -15,7 +15,7 @@
     <div class="circle">
         <div class="insideCircle">
             <h2>{{ item.status_count }}</h2>
-            <a href="./article_list_status?status={{ item.status_name }}"
+            <a href="./article_list_status?status={{ item.status_name|lower }}"
                id="status_id__{{ item.status_id }}" class="status" style="color: {{ item.status_color }}">{{ item.status_name }}
             </a>
         </div>
@@ -44,4 +44,8 @@
 
 {% block recently_updated_articles_row %}
     {% include 'component/article_table_index.twig' with {'articles': recently_updated} %}
+{% endblock %}
+
+{% block scripts %}
+    {% parent() %}
 {% endblock %}
