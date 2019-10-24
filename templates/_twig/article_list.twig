@@ -60,9 +60,23 @@
                 document.addEventListener('DOMContentLoaded', onready);
             }
         })(() => {
+            /*
+                Script start
+             */
             console.debug('[article_list:ready]');
-            // const list = document.querySelectorAll('input.article_status[type=checkbox]');
-            // list.forEach((l) => {l.setAttribute('checked', 'checked')});
+
+            const $btn_select_all = document.getElementById('btn__select_all');
+            if (! $btn_select_all) {
+                console.debug('btn__select_all not found [article_list]')
+                return false;
+            }
+
+            const change_list = document.querySelectorAll('input.article_status[type=checkbox]');
+            $btn_select_all.addEventListener('change', (e) => {
+                change_list.forEach((e) => {
+                    e.checked = e.target.checked
+                });
+            })
         });
     </script>
 {% endblock %}

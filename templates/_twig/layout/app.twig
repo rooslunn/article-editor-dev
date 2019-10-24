@@ -20,15 +20,15 @@
         </div>
         {% block scripts %}
             <script>
-                function ready(fn) {
+                ((onready) => {
                     if (document.readyState != 'loading'){
-                        fn();
+                        onready();
                     } else {
-                        document.addEventListener('DOMContentLoaded', fn);
+                        document.addEventListener('DOMContentLoaded', onready);
                     }
-                }
+                })(() => {
+                    console.debug('[app:ready]');
 
-                function bootstrap() {
                     const $searchInput = document.getElementById('id__article_search');
 
                     if (! $searchInput) {
@@ -43,9 +43,7 @@
                         console.debug(`search article_id=${article_id} [app:keypress]`);
                         // window.location.replace(`search?article_id=${article_id}`);
                     })
-                }
-
-                ready(bootstrap);
+                });
             </script>
         {% endblock %}
     </body>
