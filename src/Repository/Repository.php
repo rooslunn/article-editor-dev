@@ -3,6 +3,7 @@ namespace Dreamscape\Repository;
 
 use Dreamscape\Contracts\Database\Database as DatabaseContract;
 use Dreamscape\Contracts\Database\QueryFilter as QueryFilterContract;
+use PDO;
 
 abstract class Repository
 {
@@ -11,8 +12,9 @@ abstract class Repository
 
     const DEFAULT_QUERY_LIMIT = 5;
 
-    public function __construct(DatabaseContract $db)
+    public function __construct(DatabaseContract $db = null)
     {
+        $db = $db ?: app('db');
         $this->db = $db;
     }
 
@@ -59,13 +61,13 @@ abstract class Repository
         return $query;
     }
 
-    protected function get($query, array $filters = [], $limit = 0)
+    protected function fetchAll($query, array $filters = [], $limit = 0, $fetch_style = PDO::FETCH_ASSOC)
     {
         $query = trim($query);
 
         $query = $this->applyFilters($query, $filters);
         $query = $this->applyLimit($query, $limit);
 
-        return $this->db()->query($query)->fetchAll();
+        return $this->db()->query($query)->fetchAll($fetch_style);
     }
 }

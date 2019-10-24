@@ -37,6 +37,7 @@ class router {
 		/* List of routes here */
 		return array(
 			rtrim(self::$_root_path, '/') => 'article_editor_controller@index_dev',
+            self::$_root_path . 'article/list' => 'article_editor_controller@article_list-dev',
 			self::$_root_path . 'add' => 'article_editor_controller@add',
 			self::$_root_path . 'edit' => 'article_editor_controller@edit',
 			self::$_root_path . 'new_articles_list' => 'article_editor_controller@new_articles_list',

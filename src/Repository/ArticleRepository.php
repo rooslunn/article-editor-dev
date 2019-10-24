@@ -28,7 +28,7 @@ final class ArticleRepository extends Repository
 
     public function recenltyInserted($limit = 0)
     {
-        return $this->get($this->queryAll(), [
+        return $this->fetchAll($this->queryAll(), [
             new ActiveArticleFilter($this->articleStatusId('delete')),
             new RecentlyInsertedArticleFilter(),
         ], $limit);
@@ -36,7 +36,7 @@ final class ArticleRepository extends Repository
 
     public function recenltyUpdated($limit = 0)
     {
-        return $this->get($this->queryAll(), [
+        return $this->fetchAll($this->queryAll(), [
             new ActiveArticleFilter($this->articleStatusId('delete')),
             new RecentlyUpdatedArticleFilter(),
         ], $limit);

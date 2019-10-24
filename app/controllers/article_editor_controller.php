@@ -3,6 +3,7 @@
 use Dreamscape\Repository\ArticleCirlcesRepository;
 use Dreamscape\Repository\ArticleRepository;
 use Dreamscape\Repository\Repository;
+use Dreamscape\Repository\SectionRepository;
 
 class article_editor_controller {
 
@@ -41,10 +42,10 @@ class article_editor_controller {
 
     public function index_dev()
     {
-        $circlesRepository = new ArticleCirlcesRepository(app('db'));
+        $circlesRepository = new ArticleCirlcesRepository();
         $circles = $circlesRepository->all();
 
-        $articles = new ArticleRepository(app('db'));
+        $articles = new ArticleRepository();
         $recently_inserted = $articles->recenltyInserted(Repository::DEFAULT_QUERY_LIMIT);
         $recently_updated = $articles->recenltyUpdated(Repository::DEFAULT_QUERY_LIMIT);
 
@@ -57,14 +58,8 @@ class article_editor_controller {
 
     public function article_list_dev()
     {
-
-//        $filters = [];
-//
-//        if (($article_id = input::get('article_id')) !== null) {
-//            $filters[] = new ArticleIdFilter($article_id);
-//        }
-
-//        $sections =
+        $sections = (new SectionRepository())->get();
+        display('article_list', compact('sections'));
     }
 
     /**
