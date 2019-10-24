@@ -23,6 +23,7 @@ final class SectionIdArticleFilter extends ArticleFilter implements QueryFilterC
 
     public function orderBy()
     {
-        return "IF(a.date_updated != '0000-00-00 00:00:00', a.date_updated, a.date_scanned) desc";
+        return "IF({$this->aliased('date_updated')} != '0000-00-00 00:00:00', 
+            {$this->aliased('date_updated')}, {$this->aliased('date_scanned')}) desc";
     }
 }
