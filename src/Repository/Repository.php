@@ -35,7 +35,8 @@ abstract class Repository
         $where = [];
         $order_by = [];
 
-        $filters = array_flatten(array_unshift($filters, $this->globalFilters()));
+        array_unshift($filters, $this->globalFilters());
+        $filters = array_flatten($filters);
 
         foreach ($filters as $filter) {
             if ($filter instanceof QueryFilterContract) {
