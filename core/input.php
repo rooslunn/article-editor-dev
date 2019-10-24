@@ -76,4 +76,17 @@ class input {
 	    return array_key_exists($key, self::$_arrays['all']);
 //		return is_null(self::$_arrays['all'][$key]) ? false : true;
 	}
+
+    public static function expose(array $keys)
+    {
+        $exposed = [];
+
+        foreach ($keys as $key) {
+            if (static::get($key)) {
+                $exposed[$key] = static::get($key);
+            }
+        }
+
+        return $exposed;
+	}
 }

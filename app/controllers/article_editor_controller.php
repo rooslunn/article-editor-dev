@@ -58,7 +58,12 @@ class article_editor_controller {
 
     public function article_list_dev()
     {
+        $filters = input::expose(ArticleRepository::FILTERS);
+        $articles = (new ArticleRepository())->filterBy($filters);
+
+        /* todo: Share data between views (cache?) */
         $sections = (new SectionRepository())->get();
+
         display('article_list', compact('sections'));
     }
 

@@ -11,6 +11,8 @@ use Dreamscape\Repository\Filters\RecentlyUpdatedArticleFilter;
 final class ArticleRepository extends Repository
 {
     use WithArticleStatuses;
+
+    const FILTERS = ['section_id', 'article_id', 'status_id'];
     
     private function queryAll()
     {
@@ -40,5 +42,10 @@ final class ArticleRepository extends Repository
             new ActiveArticleFilter($this->articleStatusId('delete')),
             new RecentlyUpdatedArticleFilter(),
         ], $limit);
+    }
+
+    public function filterBy(array $filters)
+    {
+        return $filters;
     }
 }
