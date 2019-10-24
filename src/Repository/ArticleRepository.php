@@ -54,7 +54,7 @@ final class ArticleRepository extends Repository
         $query_filters = [];
 
         foreach (array_keys($filters) as $filter_name) {
-            $filter_class = string_studly($filter_name);
+            $filter_class = \string_studly($filter_name);
             if (class_exists($filter_class)) {
                 $filter_param = $filters[$filter_name];
                 $query_filters[] = (new $filter_class($filter_param));
