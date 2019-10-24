@@ -73,8 +73,8 @@
 
             const change_list = document.querySelectorAll('input.article_status[type=checkbox]');
             $btn_select_all.addEventListener('change', (e) => {
-                change_list.forEach((e) => {
-                    e.checked = e.target.checked
+                change_list.forEach((elem) => {
+                    elem.checked = e.target.checked
                 });
             })
         });
