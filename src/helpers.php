@@ -41,7 +41,8 @@ if (! function_exists('display')) {
 
 if (! function_exists('string_studly')) {
     function string_studly($str) {
-        return ucwords(str_replace(['-', '_'], ' ', $str));
+        $studly = ucwords(str_replace(['-', '_'], ' ', $str));
+        return str_replace(' ', '', $studly);
     }
 }
 
