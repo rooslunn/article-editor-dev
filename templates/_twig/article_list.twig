@@ -1,19 +1,10 @@
 {% extends "index.twig" %}
 
 {% block container %}
-    <h1>{current_section_name}</h1>
+    <h1>{{ articles_section }}</h1>
 
     <div class="buttonsBar">
-        <!-- BEGIN edit_role -->
-        <label><input class="statusBtn" type="button" onclick="window.location.href = 'edit'" value="New" /></label>
-        <label><input class="statusBtn" type="button" onclick="set_status(1)" value="Finished" /></label>
-        <!-- BEGIN publish_role -->
-        <label><input class="statusBtn" type="button" onclick="set_status(3)" value="Publish" /></label>
-        <label><input class="statusBtn" type="button" onclick="set_status(5)" value="Unpublish" /></label>
-        <!-- END publish_role -->
-        <label><input class="statusBtn" type="button" onclick="set_status(4)" value="Hold" /></label>
-        <label><input class="statusBtn" type="button" onclick="set_status(2)" value="Delete" /></label>
-        <!-- END edit_role -->
+        {% include 'component/article_action_bar.twig' with {'permissions': permissions} %}
     </div>
 
     <table class="tdTitle" cellspacing="5" width="100%">
@@ -34,13 +25,17 @@
         <tbody>
         <tr>
             <td width="55px" class="id" style="font-size:11px;">
-                <a target="_blank" href="edit?article_id={{ item.article_id }}">{{ item.article_id }}</a>
+                {% if permissions.ARTICLE_TOOL_EDITOR_ROLE %}
+                    <a target="_blank" href="edit?article_id={{ item.article_id }}">{{ item.article_id }}</a>
+                {% else %}
+                    <a target="_blank" href="{{ item.article_url }}/?debug=1">{{ item.article_id }}</a>
+                {% endif %}
             </td>
             <td class="name">
                 <a target="_blank" href="{{ item.article_url }}/?debug=1">{{ item.article_title }}</a>
             </td>
             <td width="120px" class="date" style="font-size:11px;">{{ item.date_scanned }}</td>
-            <td width="120px" id="{{ item.status }}" class="status" style="font-size:11px;">{{ item.status }}</td>
+            <td width="120px" id="{{ item.status|lower }}" class="status" style="font-size:11px;">{{ item.status }}</td>
             <td width="20px" class="check"><label><input type="checkbox" class="article_status" value="{{ item.article_id }}"></label></td>
         </tr>
         </tbody>
@@ -49,18 +44,14 @@
     <!-- END article_row -->
 
     <div class="buttonsBar btm">
-        <!-- BEGIN edit_role_footer -->
-        <label><input class="statusBtn" type="button" onclick="window.location.href = 'edit'" value="New" /></label>
-        <label><input class="statusBtn" type="button" onclick="set_status(1)" value="Finished" /></label>
-        <!-- BEGIN publish_role_footer -->
-        <label><input class="statusBtn" type="button" onclick="set_status(3)" value="Publish" /></label>
-        <label><input class="statusBtn" type="button" onclick="set_status(5)" value="Unpublish" /></label>
-        <!-- END publish_role_footer -->
-        <label><input class="statusBtn" type="button" onclick="set_status(4)" value="Hold" /></label>
-        <label><input class="statusBtn" type="button" onclick="set_status(2)" value="Delete" /></label>
-        <!-- END edit_role_footer -->
+        {% include 'component/article_action_bar.twig' with {'permissions': permissions} %}
     </div>
+
     </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
 {% endblock %}
 
 

@@ -1,0 +1,18 @@
+<!-- BEGIN edit_role -->
+{% if permissions.ARTICLE_TOOL_EDITOR_ROLE %}
+    <label><input class="statusBtn" type="button" onclick="window.location.href = 'edit'" value="New" /></label>
+    <label><input class="statusBtn" type="button" data-set-status-id="1" value="Finished" /></label>
+{% endif %}
+
+<!-- BEGIN publish_role -->
+{% if permissions.ARTICLE_TOOL_PUBLISHER_ROLE %}
+    <label><input class="statusBtn" type="button" data-set-status-id="3" value="Publish" /></label>
+    <label><input class="statusBtn" type="button" data-set-status-id="5" value="Unpublish" /></label>
+{% endif %}
+<!-- END publish_role -->
+
+{% if permissions.ARTICLE_TOOL_EDITOR_ROLE %}
+    <label><input class="statusBtn" type="button" data-set-status-id="4" value="Hold" /></label>
+    <label><input class="statusBtn" type="button" data-set-status-id="2" value="Delete" /></label>
+{% endif %}
+<!-- END edit_role -->

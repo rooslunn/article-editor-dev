@@ -50,11 +50,17 @@ class input {
 	}
 
 	public static function get($key, $from = '') {
-		if (!empty($from) && !in_array($from, array_keys(self::$_arrays))) {
+		if (!empty($from) && !array_key_exists($from, self::$_arrays)) {
 			return null;
 		}
 
-		return empty($from) ? self::$_arrays['all'][$key] : self::$_arrays[$from][$key];
+		$keys = empty($from) ? self::$_arrays['all'] : self::$_arrays[$from];
+
+		if (! array_key_exists($key, $keys)) {
+		    return null;
+        }
+
+		return $keys[$key];
 	}
 
 	public static function all() {

@@ -27,7 +27,8 @@ final class ArticleRepository extends Repository
             SELECT article.article_id, article.article_url, article.article_title, 
                    article.date_scanned, article.date_published,
                    article.date_updated, article.status_id, 
-                   generic_status.status_name as status
+                   generic_status.status_name as status,
+                   generic_status.status_color
             FROM article article
                 LEFT JOIN generic_status generic_status ON article.status_id = generic_status.status_id
                 LEFT JOIN article_sections article_sections USING (section_id)
