@@ -1,7 +1,7 @@
-{% extends "layout/app.twig" %}
+{% extends "index.twig" %}
 
 {% block sections %}
-    {% include 'component/sections.twig' with {'sections': sections} %}
+    {{ parent() }}
 {% endblock %}
 
 {% block container %}
