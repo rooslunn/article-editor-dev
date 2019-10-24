@@ -49,7 +49,7 @@ class article_editor_controller {
         $recently_inserted = $articles->recenltyInserted(Repository::DEFAULT_QUERY_LIMIT);
         $recently_updated = $articles->recenltyUpdated(Repository::DEFAULT_QUERY_LIMIT);
 
-        $sections = $this->article_editor->get_sections_list();
+        $sections = (new SectionRepository())->get();
 
         display('index',
             compact('sections', 'circles', 'recently_inserted', 'recently_updated')
