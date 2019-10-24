@@ -27,6 +27,21 @@ if (! function_exists('array_pluck')) {
     }
 }
 
+if (! function_exists('array_flatten')) {
+    function array_flatten(array $items) {
+        $result = [];
+        foreach ($items as $item) {
+            if (!is_array($item)) {
+                $result[] = $item;
+            } else {
+                array_push($result, ...array_values($item));
+            }
+        }
+
+        return $result;
+    }
+}
+
 if (! function_exists('parenthesised')) {
     function parenthesised($str) {
         return '(' . $str . ')';
@@ -38,3 +53,17 @@ if (! function_exists('display')) {
         echo app('twig')->render($template.'.twig', $data);
     }
 }
+
+if (! function_exists('string_studly')) {
+    function string_studly($str) {
+        $studly = ucwords(str_replace(['-', '_'], ' ', $str));
+        return str_replace(' ', '', $studly);
+    }
+}
+
+if (! function_exists('string_camel')) {
+    function string_camel($str) {
+        return lcfisrt(srting_studly($str));
+    }
+}
+

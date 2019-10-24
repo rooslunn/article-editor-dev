@@ -12,6 +12,8 @@ abstract class Repository
 
     const DEFAULT_QUERY_LIMIT = 5;
 
+    const FILTERS_NAMESPACE = 'Dreamscape\Repository\Filters';
+
     public function __construct(DatabaseContract $db = null)
     {
         $db = $db ?: app('db');
@@ -23,10 +25,18 @@ abstract class Repository
         return $this->db;
     }
 
+    protected function globalFilters()
+    {
+        return [];
+    }
+
     protected function applyFilters($query, array $filters)
     {
         $where = [];
         $order_by = [];
+
+        array_unshift($filters, $this->globalFilters());
+        $filters = array_flatten($filters);
 
         foreach ($filters as $filter) {
             if ($filter instanceof QueryFilterContract) {
@@ -69,5 +79,11 @@ abstract class Repository
         $query = $this->applyLimit($query, $limit);
 
         return $this->db()->query($query)->fetchAll($fetch_style);
+    }
+
+    protected function toFilterClass($filter_name, $postfix = '')
+    {
+        $filter_class = string_studly($filter_name) . $postfix;
+        return static::FILTERS_NAMESPACE . '\\' . $filter_class;
     }
 }

@@ -64,7 +64,7 @@ class article_editor_controller {
         /* todo: Share data between views (cache?) */
         $sections = (new SectionRepository())->get();
 
-        display('article_list', compact('sections'));
+        display('article_list', compact('sections', 'articles'));
     }
 
     /**

@@ -13,7 +13,14 @@ final class ArticleRepository extends Repository
     use WithArticleStatuses;
 
     const FILTERS = ['section_id', 'article_id', 'status_id'];
-    
+
+    protected function globalFilters()
+    {
+        return [
+            new ActiveArticleFilter($this->articleStatusId('delete')),
+        ];
+    }
+
     private function queryAll()
     {
         $query = '
@@ -31,7 +38,6 @@ final class ArticleRepository extends Repository
     public function recenltyInserted($limit = 0)
     {
         return $this->fetchAll($this->queryAll(), [
-            new ActiveArticleFilter($this->articleStatusId('delete')),
             new RecentlyInsertedArticleFilter(),
         ], $limit);
     }
@@ -39,13 +45,22 @@ final class ArticleRepository extends Repository
     public function recenltyUpdated($limit = 0)
     {
         return $this->fetchAll($this->queryAll(), [
-            new ActiveArticleFilter($this->articleStatusId('delete')),
             new RecentlyUpdatedArticleFilter(),
         ], $limit);
     }
 
     public function filterBy(array $filters)
     {
-        return $filters;
+        $query_filters = [];
+
+        foreach (array_keys($filters) as $filter_name) {
+            $filter_class = $this->toFilterClass($filter_name, 'ArticleFilter');
+            if (class_exists($filter_class)) {
+                $filter_param = $filters[$filter_name];
+                $query_filters[] = (new $filter_class($filter_param));
+            }
+        }
+
+        return $this->fetchAll($this->queryAll(), $query_filters);
     }
 }
