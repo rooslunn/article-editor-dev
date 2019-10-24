@@ -38,3 +38,16 @@ if (! function_exists('display')) {
         echo app('twig')->render($template.'.twig', $data);
     }
 }
+
+if (! function_exists('string_studly')) {
+    function srting_studly($str) {
+        return ucwords(str_replace(['-', '_'], ' ', $str));
+    }
+}
+
+if (! function_exists('string_camel')) {
+    function string_camel($str) {
+        return lcfisrt(srting_studly($str));
+    }
+}
+

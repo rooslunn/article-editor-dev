@@ -23,10 +23,17 @@ abstract class Repository
         return $this->db;
     }
 
+    protected function globalFilters()
+    {
+        return [];
+    }
+
     protected function applyFilters($query, array $filters)
     {
         $where = [];
         $order_by = [];
+
+        array_unshift($filters, $this->globalFilters());
 
         foreach ($filters as $filter) {
             if ($filter instanceof QueryFilterContract) {
