@@ -18,7 +18,7 @@ final class SectionIdArticleFilter extends ArticleFilter implements QueryFilterC
 
     public function where()
     {
-        return $this->where_clause($this->aliased('section_id'), '!=', $this->section_id);
+        return $this->where_clause($this->aliased('section_id'), '=', $this->section_id);
     }
 
     public function orderBy()
