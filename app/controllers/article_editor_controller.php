@@ -1,5 +1,6 @@
 <?php
 
+use Dreamscape\Foundation\ACL;
 use Dreamscape\Repository\ArticleCirlcesRepository;
 use Dreamscape\Repository\ArticleRepository;
 use Dreamscape\Repository\Repository;
@@ -60,11 +61,14 @@ class article_editor_controller {
     {
         $filters = input::expose(ArticleRepository::FILTERS);
         $articles = (new ArticleRepository())->filterBy($filters);
+        $articles_section = 'Not implemented';
 
         /* todo: Share data between views (cache?) */
         $sections = (new SectionRepository())->get();
 
-        display('article_list', compact('sections', 'articles'));
+        $permissions = ACL::permissions();
+
+        display('article_list', compact('sections', 'articles_section', 'articles', 'permissions'));
     }
 
     /**
