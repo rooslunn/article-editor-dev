@@ -18,7 +18,7 @@
                         <a href="./">Home Page</a>
                     </li>
                     <!-- BEGIN article_row_nav -->
-                    {% block article_row_nav %}
+                    {% block sections %}
                     {% endblock %}
                     <!-- END article_row_nav -->
                 </ul>
@@ -26,31 +26,37 @@
 
             <div class="articleLinks-container">
 
-                <h1>Doc Editor</h1>
+                {% block container %}
 
-<!------------------------ CIRCLES ----------------------------------------------->
-                <!-- BEGIN article_editor_header -->
-                {% block article_editor_header %}
+                    <h1>Doc Editor</h1>
+
+    <!------------------------ CIRCLES ----------------------------------------------->
+                    <!-- BEGIN article_editor_header -->
+                    {% block article_editor_header %}
+                    {% endblock %}
+                     <!-- END article_editor_header -->
+    <!------------------------ /CIRCLES ----------------------------------------------->
+
+                    <div class="new-articleList">
+                        <h2 class="subTitles-homePage"><a href="./new_articles_list">New Articles</a></h2>
+                        <!-- BEGIN new_articles_row -->
+                        {% block recently_inserted_articles_row %}
+                        {% endblock %}
+                        <!-- END new_articles_row -->
+                    </div>
+
+                    <div class="lastUpdated-articleList">
+                        <h2 class="subTitles-homePage"><a href="./last_updated_articles_list">Last Updated</a></h2>
+                        <!-- BEGIN last_updated_articles_row -->
+                        {% block recently_updated_articles_row %}
+                        {% endblock %}
+                        <!-- END last_updated_articles_row -->
+                    </div>
+
                 {% endblock %}
-                 <!-- END article_editor_header -->
-<!------------------------ /CIRCLES ----------------------------------------------->
 
-                <div class="new-articleList">
-                    <h2 class="subTitles-homePage"><a href="./new_articles_list">New Articles</a></h2>
-                    <!-- BEGIN new_articles_row -->
-                    {% block recently_inserted_articles_row %}
-                    {% endblock %}
-                    <!-- END new_articles_row -->
-                </div>
-
-                <div class="lastUpdated-articleList">
-                    <h2 class="subTitles-homePage"><a href="./last_updated_articles_list">Last Updated</a></h2>
-                    <!-- BEGIN last_updated_articles_row -->
-                    {% block recently_updated_articles_row %}
-                    {% endblock %}
-                    <!-- END last_updated_articles_row -->
-                </div>
             </div>
+
         </div>
         {% block scripts %}
             <script>
@@ -74,8 +80,8 @@
                         if (e.key !== 'Enter') return;
 
                         const article_id = $searchInput.value;
-                        console.debug(`search article_id=${article_id} [app]`);
-                        window.location.replace(`search?article_id=${article_id}`);
+                        console.debug(`search article_id=${article_id} [home:keypress]`);
+                        // window.location.replace(`search?article_id=${article_id}`);
                     })
                 }
 

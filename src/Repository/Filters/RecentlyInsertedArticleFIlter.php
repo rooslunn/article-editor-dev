@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Dreamscape\Repository\ArticleCategory;
+namespace Dreamscape\Repository\Filters;
 
 
-class RecentlyInsertedCategory extends ArticleCategory implements ArticleCategoryContract
+class RecentlyInsertedArticleFIlter extends QueryFilter implements QueryFilter
 {
 
     public function where()

@@ -55,6 +55,18 @@ class article_editor_controller {
         );
     }
 
+    public function article_list_dev()
+    {
+
+//        $filters = [];
+//
+//        if (($article_id = input::get('article_id')) !== null) {
+//            $filters[] = new ArticleIdFilter($article_id);
+//        }
+
+//        $sections =
+    }
+
     /**
      * Main index page
 	 * @return void

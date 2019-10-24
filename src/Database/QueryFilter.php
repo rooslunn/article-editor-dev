@@ -1,16 +1,19 @@
 <?php
 
 
-namespace Dreamscape\Repository\ArticleCategory;
+namespace Dreamscape\Database;
 
 
-abstract class ArticleCategory
+abstract class QueryFilter
 {
-    protected $alias = 'article';
+    protected $alias;
 
     protected function aliased($field_name)
     {
-        return "{$this->alias}.$field_name";
+        if ($this->alias) {
+            return "{$this->alias}.$field_name";
+        }
+        return $field_name;
     }
 
     protected function where_clause()

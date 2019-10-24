@@ -1,10 +1,12 @@
 <?php
 
 
-namespace Dreamscape\Repository\ArticleCategory;
+namespace Dreamscape\Repository\Filters;
 
 
-class ActiveCategory extends ArticleCategory implements ArticleCategoryContract
+use Dreamscape\Contracts\Database\QueryFilter as QueryFilterContract;
+
+final class ActiveArticleFilter extends ArticleFilter implements QueryFilterContract
 {
     protected $status_deleted;
 
