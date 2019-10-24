@@ -4,7 +4,10 @@
 namespace Dreamscape\Repository\Filters;
 
 
-class RecentlyInsertedArticleFIlter extends QueryFilter implements QueryFilter
+use Dreamscape\Contracts\Database\QueryFilter as QueryFilterContract;
+use Dreamscape\Database\QueryFilter;
+
+class RecentlyInsertedArticleFilter extends QueryFilter implements QueryFilterContract
 {
 
     public function where()

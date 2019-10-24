@@ -5,7 +5,7 @@ namespace Dreamscape\Repository;
 
 
 use Dreamscape\Repository\Filters\ActiveArticleFilter;
-use Dreamscape\Repository\Filters\RecentlyInsertedArticleFIlter;
+use Dreamscape\Repository\Filters\RecentlyInsertedArticleFilter;
 use Dreamscape\Repository\Filters\RecentlyUpdatedArticleFilter;
 
 final class ArticleRepository extends Repository
@@ -30,7 +30,7 @@ final class ArticleRepository extends Repository
     {
         return $this->get($this->queryAll(), [
             new ActiveArticleFilter($this->articleStatusId('delete')),
-            new RecentlyInsertedArticleFIlter(),
+            new RecentlyInsertedArticleFilter(),
         ], $limit);
     }
 
