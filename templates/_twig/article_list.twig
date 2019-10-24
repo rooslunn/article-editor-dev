@@ -25,7 +25,11 @@
         <tbody>
         <tr>
             <td width="55px" class="id" style="font-size:11px;">
-                <a target="_blank" href="edit?article_id={{ item.article_id }}">{{ item.article_id }}</a>
+                {% if permissions.ARTICLE_TOOL_EDITOR_ROLE %}
+                    <a target="_blank" href="edit?article_id={{ item.article_id }}">{{ item.article_id }}</a>
+                {% else %}
+                    <a target="_blank" href="{{ item.article_url }}/?debug=1">{{ item.article_id }}</a>
+                {% endif %}
             </td>
             <td class="name">
                 <a target="_blank" href="{{ item.article_url }}/?debug=1">{{ item.article_title }}</a>
