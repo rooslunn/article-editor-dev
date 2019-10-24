@@ -1,7 +1,16 @@
-{% for item in sections %}
-    <li>
-        <a href="?section_name={{ item.section_title|replace(' ', '-') }}">
-            {{ item.section_title }} <p style="font-size:11px; display:inline;">({{ item.total }})</p>
-        </a>
+<div class="articleId-searchbar">
+    <input type="search" placeholder="Search Article Id" id="id__article_search"/>
+</div>
+
+<ul>
+    <li class="homeLink">
+        <a href="./">Home Page</a>
     </li>
-{% endfor %}
+    {% for item in sections %}
+        <li>
+            <a href="?section_name={{ item.section_title|replace(' ', '-') }}">
+                {{ item.section_title }} <p style="font-size:11px; display:inline;">({{ item.total }})</p>
+            </a>
+        </li>
+    {% endfor %}
+</ul>
