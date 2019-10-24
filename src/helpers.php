@@ -27,6 +27,21 @@ if (! function_exists('array_pluck')) {
     }
 }
 
+if (! function_exists('array_flatten')) {
+    function array_flatten(array $items) {
+        $result = [];
+        foreach ($items as $item) {
+            if (!is_array($item)) {
+                $result[] = $item;
+            } else {
+                array_push($result, ...array_values($item));
+            }
+        }
+
+        return $result;
+    }
+}
+
 if (! function_exists('parenthesised')) {
     function parenthesised($str) {
         return '(' . $str . ')';
