@@ -25,6 +25,6 @@ final class SectionRepository extends Repository
 
     public function get()
     {
-        $this->fetchAll($this->queryAll());
+        return $this->fetchAll($this->queryAll());
     }
 }
