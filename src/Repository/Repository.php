@@ -53,10 +53,10 @@ abstract class Repository
         $order_by_clause = implode(', ', $order_by);
 
         if (! empty($where_clause)) {
-            $query = "{$query} where {$where_clause}";
+            $query = "{$query} \n where {$where_clause}";
         }
         if (! empty($order_by_clause)) {
-            $query = "{$query} order by {$order_by_clause}";
+            $query = "{$query} \n order by {$order_by_clause}";
         }
 
         return $query;

@@ -23,6 +23,6 @@ final class SectionIdArticleFilter extends ArticleFilter implements QueryFilterC
 
     public function orderBy()
     {
-        return null;
+        return "IF(a.date_updated != '0000-00-00 00:00:00', a.date_updated, a.date_scanned) desc";
     }
 }

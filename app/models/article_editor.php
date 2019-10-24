@@ -480,10 +480,7 @@ class article_editor {
 					WHERE a.status_id != {$this->article_statuses['delete']}
 						{$conditions}
 						ORDER BY
-							CASE
-								WHEN a.date_updated != '0000-00-00 00:00:00' THEN a.date_updated
-								ELSE a.date_scanned
-							END
+							IF(a.date_updated != '0000-00-00 00:00:00', a.date_updated, a.date_scanned)
 						DESC
 					LIMIT {$offset} 999";
 		$result = $this->sYra_help->query($query);
