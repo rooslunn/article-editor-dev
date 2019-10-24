@@ -8,7 +8,7 @@
     </li>
     {% for item in sections %}
         <li>
-            <a href="./article_list?section_id={{ item.section_id }}">
+            <a href="./article_list?section_id={{ item.section_id }}&section_name={{ item.section_title }}">
                 {{ item.section_title }} <p style="font-size:11px; display:inline;">({{ item.total }})</p>
             </a>
         </li>

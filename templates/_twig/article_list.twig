@@ -1,7 +1,7 @@
 {% extends "index.twig" %}
 
 {% block container %}
-    <h1>{{ articles_section }}</h1>
+    <h1>{{ section_title }}</h1>
 
     <div class="buttonsBar">
         {% include 'component/article_action_bar.twig' with {'permissions': permissions} %}
@@ -52,6 +52,10 @@
 
 {% block scripts %}
     {{ parent() }}
+    <script>
+        const list = document.querySelectorAll('input.article_status[type=checkbox]');
+        list.forEach((l) => {l.setAttribute('checked', 'checked')});
+    </script>
 {% endblock %}
 
 
