@@ -11,8 +11,8 @@
         <div class="circle">
             <div class="insideCircle">
                 <h2>{{ item.status_count }}</h2>
-                <a href="./article_list_status?status={{ item.status_name|lower }}"
-                   id="status_id__{{ item.status_id }}" class="status" style="color: {{ item.status_color }}">{{ item.status_name }}
+                <a href="./article_list?status_id={{ item.status_id }}"
+                   id="id__status_{{ item.status_id }}" class="status" style="color: {{ item.status_color }}">{{ item.status_name }}
                 </a>
             </div>
         </div>
