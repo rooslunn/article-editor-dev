@@ -61,14 +61,12 @@ class article_editor_controller {
     {
         $filters = input::expose(ArticleRepository::FILTERS);
         $articles = (new ArticleRepository())->filterBy($filters);
-        $articles_section = 'Not implemented';
-
+        $section_title = input::get('section_name');
         /* todo: Share data between views (cache?) */
         $sections = (new SectionRepository())->get();
-
         $permissions = ACL::permissions();
 
-        display('article_list', compact('sections', 'articles_section', 'articles', 'permissions'));
+        display('article_list', compact('sections', 'section_title', 'articles', 'permissions'));
     }
 
     /**
