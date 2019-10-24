@@ -40,7 +40,7 @@ if (! function_exists('display')) {
 }
 
 if (! function_exists('string_studly')) {
-    function srting_studly($str) {
+    function string_studly($str) {
         return ucwords(str_replace(['-', '_'], ' ', $str));
     }
 }
