@@ -12,7 +12,7 @@ final class ACL
     {
         $result = [];
         foreach (self::ARTICLE_TOOL_ROLES as $role) {
-            $result[$role] = crms_user::check_current_permissions($role);
+            $result[$role] = \crms_user::check_current_permissions($role);
         }
         return $result;
     }
