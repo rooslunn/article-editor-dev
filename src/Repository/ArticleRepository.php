@@ -61,7 +61,6 @@ final class ArticleRepository extends Repository
             }
         }
 
-        return [];
-//        return $this->fetchAll($this->queryAll(), $query_filters);
+        return $this->fetchAll($this->queryAll(), $query_filters);
     }
 }
