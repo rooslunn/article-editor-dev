@@ -34,6 +34,15 @@
                 searchParams.append('section_id', $target.getAttribute('data-section_id'));
                 searchParams.append('section_name', $target.getAttribute('data-section_name'));
                 console.debug('ajax url:', searchParams.toString(), '[sections:onclick]');
+
+                ds__ajax_getHTML(searchParams.toString()).then(
+                    (html) => {
+                        
+                    }
+                ).catch(error => {
+                    console.error(error);
+                })
+
             })
 
 

@@ -1,4 +1,4 @@
-{% extends "index.twig" %}
+{#{% extends "index.twig" %}#}
 
 {% block container %}
     <h1>{{ section_title }}</h1>
@@ -51,7 +51,7 @@
 {% endblock %}
 
 {% block scripts %}
-    {{ parent() }}
+{#    {{ parent() }}#}
     <script>
         ds__onReady(() => {
             console.debug('[article_list:ready]');
