@@ -68,7 +68,7 @@ class article_editor_controller {
         $end = microtime(true);
 
         $section_title = input::get('section_name');
-        /* todo: Share data between views (cache?) */
+        /* todo: Share data between views (cache?, ajax?) */
         $sections = (new SectionRepository())->get();
         $timings['03-sections'] = microtime(true) - $end;
         $end = microtime(true);

@@ -8,9 +8,32 @@
     </li>
     {% for item in sections %}
         <li>
-            <a href="./article_list?section_id={{ item.section_id }}&section_name={{ item.section_title }}">
+{#            <a href="./article_list?section_id={{ item.section_id }}&section_name={{ item.section_title }}">#}
+{#                {{ item.section_title }} <p style="font-size:11px; display:inline;">({{ item.total }})</p>#}
+{#            </a>#}
+            <a class="js__article_sections" href="" data-section_id="{{ item.section_id }}" data-section_name="{{ item.section_title }}">
                 {{ item.section_title }} <p style="font-size:11px; display:inline;">({{ item.total }})</p>
             </a>
         </li>
     {% endfor %}
 </ul>
+
+{% block scripts %}
+    <script>
+        __onReady(() => {
+            console.debug('[sections:ready]');
+
+            const $sections = document.querySelectorAll('.js__article_sections');
+            if (! $sections) {
+                console.error('sections not found [sections:onclick')
+            }
+
+            $sections.addEventListener('onclick', (event) => {
+                const $target = event.target;
+                const section_id = $target.getAttribute('data-section_id');
+                const section_name = $target.getAttribute('data-section_name');
+                console.debug('section_id:', section_id, 'section_name:', section_name, '[sections:onclick]');
+            })
+        })
+    </script>
+{% endblock %}
