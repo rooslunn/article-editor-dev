@@ -18,6 +18,18 @@
                     document.addEventListener('DOMContentLoaded', bootstrap);
                 }
             }
+
+            /*
+
+             */
+            function __bindEvent(querySelector, eventName, listener) {
+                const items = document.querySelectorAll(querySelector);
+                if (items) {
+                    items.addEventListener(eventName, listener)
+                } else {
+                    console.debug(`${querySelector} not found [app:__bindEvent]`)
+                }
+            }
         </script>
 
         <div id="mainContainer">
