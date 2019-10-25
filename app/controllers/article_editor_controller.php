@@ -59,14 +59,27 @@ class article_editor_controller {
 
     public function article_list_dev()
     {
+        $timings = [];
+        $timings['01-start'] = ($end = microtime(true));
+
         $filters = input::expose(ArticleRepository::FILTERS);
         $articles = (new ArticleRepository())->filterBy($filters);
+        $timings['02-articles'] = microtime(true) - $end;
+        $end = microtime(true);
+
         $section_title = input::get('section_name');
         /* todo: Share data between views (cache?) */
         $sections = (new SectionRepository())->get();
-        $permissions = ACL::permissions();
+        $timings['03-sections'] = microtime(true) - $end;
+        $end = microtime(true);
 
-        display('article_list', compact('sections', 'section_title', 'articles', 'permissions'));
+        $permissions = ACL::permissions();
+        $timings['04-permissions'] = microtime(true) - $end;
+        $timings['05-request'] = microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'];
+
+        $timings_json = json_encode($timings);
+
+        display('article_list', compact('sections', 'section_title', 'articles', 'permissions', 'timings_json'));
     }
 
     /**
