@@ -39,15 +39,12 @@
                 url += searchParams.toString();
                 console.debug('ajax url:', url, '[sections:onclick]');
 
-                ds__ajax_getHTML(url)
-                    .then((html) => {
-                        console.debug('.then [sections:.js__article_sections.click', html);
-                        // document.getElementById('id__container').innerHTML = html;
-                    })
-                    .catch((error) => {
-                        console.error(error);
-                    })
-
+                ds__ajax_getHTML(url, (html) => {
+                    console.debug('.then [sections:.js__article_sections.click', html);
+                    // document.getElementById('id__container').innerHTML = html;
+                }, (error) => {
+                    console.error(error);
+                });
             })
 
 

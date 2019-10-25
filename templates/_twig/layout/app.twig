@@ -45,28 +45,26 @@
             /*
                 Request Helpers
              */
-            function ds__ajax_getHTML(url) {
-                return new Promise((resolve, reject) => {
-                    const request = new XMLHttpRequest();
-                    request.open('GET', url, true);
+            function ds__ajax_getHTML(url, success, error) {
+                const request = new XMLHttpRequest();
+                request.open('GET', url, true);
 
-                    request.onload = (r) => {
-                        if (r.status >= 200 && r.status < 400) {
-                            console.debug('promise.resolve [app:ds__ajax_getHTML]')
-                            resolve(r.response);
-                        } else {
-                            console.debug('promise.onload reject [app:ds__ajax_getHTML]')
-                            // reject(this.responseText);
-                        }
-                    };
+                request.onload = () => {
+                    if (this.status >= 200 && this.status < 400) {
+                        console.debug('promise.resolve [app:ds__ajax_getHTML]')
+                        success(this.response);
+                    } else {
+                        console.debug('promise.onload reject [app:ds__ajax_getHTML]')
+                        error(this.responseText);
+                    }
+                };
 
-                    request.onerror = function() {
-                        console.debug('promise.onerror reject [app:ds__ajax_getHTML]')
-                        // reject(this.responseText);
-                    };
+                request.onerror = function() {
+                    console.debug('promise.onerror reject [app:ds__ajax_getHTML]')
+                    error(this.responseText);
+                };
 
-                    request.send();
-                })
+                request.send();
             }
         </script>
 
