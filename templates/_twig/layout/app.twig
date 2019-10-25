@@ -58,8 +58,8 @@
                         }
                     };
 
-                    request.onerror = function(error) {
-                        reject('connection error');
+                    request.onerror = function() {
+                        reject(this.responseText);
                     };
 
                     request.send();

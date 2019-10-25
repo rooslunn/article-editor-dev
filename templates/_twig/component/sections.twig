@@ -30,12 +30,12 @@
                 event.preventDefault();
                 const $target = event.target;
 
-                const searchParams = new URLSearchParams('article_list?');
+                const searchParams = new URLSearchParams('');
                 searchParams.append('section_id', $target.getAttribute('data-section_id'));
                 searchParams.append('section_name', $target.getAttribute('data-section_name'));
                 console.debug('ajax url:', searchParams.toString(), '[sections:onclick]');
 
-                ds__ajax_getHTML(searchParams.toString())
+                ds__ajax_getHTML('article_list?' + searchParams.toString())
                     .then((html) => {
                         document.getElementById('id__container').innerHTML = html;
                     })
