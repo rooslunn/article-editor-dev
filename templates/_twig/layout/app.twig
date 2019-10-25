@@ -20,13 +20,14 @@
         </div>
         {% block scripts %}
             <script>
-                ((onready) => {
+                function __onReady (bootstrap) {
                     if (document.readyState != 'loading'){
-                        onready();
+                        bootstrap();
                     } else {
-                        document.addEventListener('DOMContentLoaded', onready);
+                        document.addEventListener('DOMContentLoaded', bootstrap);
                     }
-                })(() => {
+                }
+                __onReady(() => {
                     console.debug('[app:ready]');
 
                     const $searchInput = document.getElementById('id__article_search');

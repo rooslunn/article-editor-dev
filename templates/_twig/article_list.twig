@@ -53,16 +53,7 @@
 {% block scripts %}
     {{ parent() }}
     <script>
-        ((onready) => {
-            if (document.readyState != 'loading'){
-                onready();
-            } else {
-                document.addEventListener('DOMContentLoaded', onready);
-            }
-        })(() => {
-            /*
-                Script start
-             */
+        __onReady(() => {
             console.debug('[article_list:ready]');
 
             const $btn_select_all = document.getElementById('btn__select_all');
@@ -71,12 +62,16 @@
                 return false;
             }
 
-            const change_list = document.querySelectorAll('input.article_status[type=checkbox]');
+            /*
+                Event binding
+             */
+            const $change_list = document.querySelectorAll('input.article_status[type=checkbox]');
             $btn_select_all.addEventListener('change', (e) => {
-                change_list.forEach((elem) => {
+                $change_list.forEach((elem) => {
                     elem.checked = e.target.checked
                 });
             })
+
         });
     </script>
 {% endblock %}
