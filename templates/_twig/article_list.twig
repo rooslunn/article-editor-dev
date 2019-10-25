@@ -1,4 +1,4 @@
-{#{% extends "index.twig" %}#}
+{% extends "index.twig" %}
 
 {% block container %}
     <h1>{{ section_title }}</h1>
@@ -51,7 +51,7 @@
 {% endblock %}
 
 {% block scripts %}
-{#    {{ parent() }}#}
+    {{ parent() }}
     <script>
         ds__onReady(() => {
             console.debug('[article_list:ready]');
@@ -59,7 +59,7 @@
             console.debug(JSON.parse(timings), '[article_list:timings]');
 
             /*
-                Article list checkbox processing
+                Article list select/deselect all
              */
             ds__bindEvent_getElementById('btn__select_all', 'change', (event) => {
                 const $change_list = document.querySelectorAll('input.article_status[type=checkbox]');
@@ -68,7 +68,6 @@
                 });
                 console.debug('well done [article_list:checked]')
             })
-
         });
     </script>
 {% endblock %}

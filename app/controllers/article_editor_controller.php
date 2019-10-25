@@ -69,9 +69,9 @@ class article_editor_controller {
 
         $section_title = input::get('section_name');
         /* todo: Share data between views (cache?, ajax?) */
-//        $sections = (new SectionRepository())->get();
-//        $timings['03-sections'] = microtime(true) - $end;
-//        $end = microtime(true);
+        $sections = (new SectionRepository())->get();
+        $timings['03-sections'] = microtime(true) - $end;
+        $end = microtime(true);
 
         $permissions = ACL::permissions();
         $timings['04-permissions'] = microtime(true) - $end;
@@ -79,8 +79,7 @@ class article_editor_controller {
 
         $timings_json = json_encode($timings);
 
-//        display('article_list', compact('sections', 'section_title', 'articles', 'permissions', 'timings_json'));
-        display('article_list', compact('section_title', 'articles', 'permissions', 'timings_json'));
+        display('article_list', compact('sections', 'section_title', 'articles', 'permissions', 'timings_json'));
     }
 
     /**
