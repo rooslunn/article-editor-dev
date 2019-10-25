@@ -50,10 +50,10 @@
                     const request = new XMLHttpRequest();
                     request.open('GET', url, true);
 
-                    request.onload = () => {
-                        if (this.status >= 200 && this.status < 400) {
+                    request.onload = (r) => {
+                        if (r.status >= 200 && r.status < 400) {
                             console.debug('promise.resolve [app:ds__ajax_getHTML]')
-                            resolve(this.response);
+                            resolve(r.response);
                         } else {
                             console.debug('promise.onload reject [app:ds__ajax_getHTML]')
                             // reject(this.responseText);
