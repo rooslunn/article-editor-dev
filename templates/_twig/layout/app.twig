@@ -11,7 +11,7 @@
             /*
                 We register global simple onReady function (you might not need jquery...)
              */
-            function __onReady (bootstrap) {
+            function ds__onReady (bootstrap) {
                 if (document.readyState != 'loading'){
                     bootstrap();
                 } else {
@@ -22,12 +22,23 @@
             /*
 
              */
-            function __bindEvent(querySelector, eventName, listener) {
+            function ds__bindEvent_querySelectorAll(querySelector, eventName, listener) {
                 const items = document.querySelectorAll(querySelector);
                 if (items) {
-                    items.addEventListener(eventName, listener)
+                    items.forEach((item) => {
+                        item.addEventListener(eventName, listener)
+                    })
                 } else {
-                    console.debug(`${querySelector} not found [app:__bindEvent]`)
+                    console.debug(`${querySelector} not found [app:__bindEventSelectorAll]`)
+                }
+            }
+
+            function ds__bindEvent_getElementById(id, eventName, listener) {
+                const item = document.getElementById(id);
+                if (item) {
+                    item.addEventListener(eventName, listener)
+                } else {
+                    console.debug(`${id} not found [app:__bindEvent_getElementById]`)
                 }
             }
         </script>
@@ -46,7 +57,7 @@
         </div>
         {% block scripts %}
             <script>
-                __onReady(() => {
+                ds__onReady(() => {
                     console.debug('[app:ready]');
 
                     const $searchInput = document.getElementById('id__article_search');
