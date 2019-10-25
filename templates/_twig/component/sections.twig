@@ -11,7 +11,7 @@
 {#            <a href="./article_list?section_id={{ item.section_id }}&section_name={{ item.section_title }}">#}
 {#                {{ item.section_title }} <p style="font-size:11px; display:inline;">({{ item.total }})</p>#}
 {#            </a>#}
-            <a class="js__article_sections" href="" data-section_id="{{ item.section_id }}" data-section_name="{{ item.section_title }}">
+            <a class="js__article_sections" rel="noreferrer" target="_self" data-section_id="{{ item.section_id }}" data-section_name="{{ item.section_title }}">
                 {{ item.section_title }} <p style="font-size:11px; display:inline;">({{ item.total }})</p>
             </a>
         </li>
@@ -27,6 +27,7 @@
                 Load section's articles asynchronously
             */
             ds__bindEvent_querySelectorAll('.js__article_sections', 'click', (event) => {
+                event.preventDefault();
                 const $target = event.target;
                 const section_id = $target.getAttribute('data-section_id');
                 const section_name = $target.getAttribute('data-section_name');
