@@ -29,10 +29,13 @@
             ds__bindEvent_querySelectorAll('.js__article_sections', 'click', (event) => {
                 event.preventDefault();
                 const $target = event.target;
-                const searchParams = new URLSearchParams('article_list?');
+
+                const url = new URL('article_list?');
+                const searchParams = new URLSearchParams(url.search);
                 searchParams.append('section_id', $target.getAttribute('data-section_id'));
                 searchParams.append('section_name', $target.getAttribute('data-section_name'));
-                console.debug('ajax url:', searchParams.toString(), '[sections:onclick]');
+                url.search = searchParams.toString();
+                console.debug('ajax url:', url.toString(), '[sections:onclick]');
             })
 
 
