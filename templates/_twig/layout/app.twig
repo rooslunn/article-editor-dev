@@ -49,18 +49,18 @@
                 const request = new XMLHttpRequest();
                 request.open('GET', url, true);
 
-                request.onload = () => {
+                request.onload = function () {
                     if (this.status >= 200 && this.status < 400) {
                         console.debug('promise.resolve [app:ds__ajax_getHTML]')
                         success(this.response);
                     } else {
-                        console.debug('promise.onload reject [app:ds__ajax_getHTML]')
+                        console.debug('onload reject [app:ds__ajax_getHTML]')
                         error(this.responseText);
                     }
                 };
 
                 request.onerror = function() {
-                    console.debug('promise.onerror reject [app:ds__ajax_getHTML]')
+                    console.debug('onerror reject [app:ds__ajax_getHTML]')
                     error(this.responseText);
                 };
 
