@@ -6,6 +6,20 @@
         <link rel="stylesheet" href="public/css/article-list.css" type="text/css"/>
     </head>
     <body>
+
+        <script>
+            /*
+                We register global simple onReady function (you might not need jquery...)
+             */
+            function __onReady (bootstrap) {
+                if (document.readyState != 'loading'){
+                    bootstrap();
+                } else {
+                    document.addEventListener('DOMContentLoaded', bootstrap);
+                }
+            }
+        </script>
+
         <div id="mainContainer">
             <div class="articleListTitle">
                 {% block sections %}
@@ -20,13 +34,6 @@
         </div>
         {% block scripts %}
             <script>
-                function __onReady (bootstrap) {
-                    if (document.readyState != 'loading'){
-                        bootstrap();
-                    } else {
-                        document.addEventListener('DOMContentLoaded', bootstrap);
-                    }
-                }
                 __onReady(() => {
                     console.debug('[app:ready]');
 
