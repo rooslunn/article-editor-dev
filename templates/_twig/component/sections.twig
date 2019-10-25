@@ -30,7 +30,10 @@
             const sections = document.getElementById('js__sections');
             const sortable_sections = Sortable.create(sections, {
                 draggable: '.js__section',
-                animation: 150
+                animation: 150,
+                onUpdate: function (event) {
+                    console.debug(event, '[sections:sortable.onUpdate]')
+                }
             });
         })
     </script>
