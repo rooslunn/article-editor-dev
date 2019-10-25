@@ -52,13 +52,16 @@
 
                     request.onload = () => {
                         if (this.status >= 200 && this.status < 400) {
+                            console.debug('promise.resolve [app:ds__ajax_getHTML]')
                             resolve(this.response);
                         } else {
+                            console.debug('promise.reject [app:ds__ajax_getHTML]')
                             reject(this.responseText);
                         }
                     };
 
                     request.onerror = function() {
+                        console.debug('promise.reject [app:ds__ajax_getHTML]')
                         reject(this.responseText);
                     };
 
