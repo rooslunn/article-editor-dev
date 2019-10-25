@@ -40,8 +40,8 @@
                 console.debug('ajax url:', url, '[sections:onclick]');
 
                 ds__ajax_getHTML(url, (html) => {
-                    console.debug('.then [sections:.js__article_sections.click', html);
-                    // document.getElementById('id__container').innerHTML = html;
+                    console.debug('success [sections:ds__ajax_getHTML]');
+                    document.getElementById('id__container').innerHTML = html;
                 }, (error) => {
                     console.error(error);
                 });
