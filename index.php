@@ -44,15 +44,16 @@ require __DIR__.'/vendor/autoload.php';
 /*
  * Shared DB
  */
-app()->instance('db', new \Dreamscape\Database\DatabaseContracted(DB_SERVER, DB_SERVER_USERNAME, DB_SERVER_PASSWORD, DB_NAME));
+app()->bind('db', new \Dreamscape\Database\DatabaseContracted(DB_SERVER, DB_SERVER_USERNAME, DB_SERVER_PASSWORD, DB_NAME));
 
 /* Twig */
 $twig_loader = new \Twig\Loader\FilesystemLoader('templates/_twig');
-app()->instance('twig', new Twig\Environment($twig_loader));
+app()->bind('twig', new Twig\Environment($twig_loader));
 
 /*
  * Full Steam Ahead!
  */
-/* todo: migrate to Kernel */
+/* todo: simplify to Kernel */
+/* todo: migrate to Router (Symfony?) */
 router::init();
 router::start();

@@ -44,4 +44,13 @@ class Container implements ContainerContract
         }
         throw new AbstractNotInstantiated("Container abstract '{$abstract}' not instantiated");
     }
+
+    public function bind($abstract, $concrete = null, $shared = false)
+    {
+        if (is_null($concrete)) {
+            $concrete = $abstract;
+        }
+        
+        $this->instance($abstract, $concrete);
+    }
 }
