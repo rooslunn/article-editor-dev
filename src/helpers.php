@@ -48,9 +48,15 @@ if (! function_exists('parenthesised')) {
     }
 }
 
+if (! function_exists('view')) {
+    function view($template, array $data) {
+        return app('twig')->render($template.'.twig', $data);
+    }
+}
+
 if (! function_exists('display')) {
     function display($template, array $data) {
-        echo app('twig')->render($template.'.twig', $data);
+        echo view($template, $data);
     }
 }
 

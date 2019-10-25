@@ -6,13 +6,75 @@
         <link rel="stylesheet" href="public/css/article-list.css" type="text/css"/>
     </head>
     <body>
+
+        <script>
+            /*
+                We register global simple onReady function (you might not need jquery...)
+             */
+            function ds__onReady (bootstrap) {
+                if (document.readyState != 'loading'){
+                    bootstrap();
+                } else {
+                    document.addEventListener('DOMContentLoaded', bootstrap);
+                }
+            }
+
+            /*
+                Event binding Helpers
+             */
+            function ds__bindEvent_querySelectorAll(querySelector, eventName, listener) {
+                const items = document.querySelectorAll(querySelector);
+                if (items) {
+                    items.forEach((item) => {
+                        item.addEventListener(eventName, listener)
+                    })
+                } else {
+                    console.debug(`${querySelector} not found [app:__bindEventSelectorAll]`)
+                }
+            }
+
+            function ds__bindEvent_getElementById(id, eventName, listener) {
+                const item = document.getElementById(id);
+                if (item) {
+                    item.addEventListener(eventName, listener)
+                } else {
+                    console.debug(`${id} not found [app:__bindEvent_getElementById]`)
+                }
+            }
+
+            /*
+                Request Helpers
+             */
+            function ds__ajax_getHTML(url, success, error) {
+                const request = new XMLHttpRequest();
+                request.open('GET', url, true);
+
+                request.onload = function () {
+                    if (this.status >= 200 && this.status < 400) {
+                        console.debug('promise.resolve [app:ds__ajax_getHTML]')
+                        success(this.response);
+                    } else {
+                        console.debug('onload reject [app:ds__ajax_getHTML]')
+                        error(this.responseText);
+                    }
+                };
+
+                request.onerror = function() {
+                    console.debug('onerror reject [app:ds__ajax_getHTML]')
+                    error(this.responseText);
+                };
+
+                request.send();
+            }
+        </script>
+
         <div id="mainContainer">
             <div class="articleListTitle">
                 {% block sections %}
                 {% endblock %}
             </div>
 
-            <div class="articleLinks-container">
+            <div class="articleLinks-container" id="id__container">
                 {% block container %}
                 {% endblock %}
             </div>
@@ -20,27 +82,12 @@
         </div>
         {% block scripts %}
             <script>
-                function __onReady (bootstrap) {
-                    if (document.readyState != 'loading'){
-                        bootstrap();
-                    } else {
-                        document.addEventListener('DOMContentLoaded', bootstrap);
-                    }
-                }
-                __onReady(() => {
+                ds__onReady(() => {
                     console.debug('[app:ready]');
 
-                    const $searchInput = document.getElementById('id__article_search');
-
-                    if (! $searchInput) {
-                        console.error('Search input ID not found...');
-                        return
-                    }
-
-                    $searchInput.addEventListener('keypress', function (e) {
-                        if (e.key !== 'Enter') return;
-
-                        const article_id = $searchInput.value;
+                    ds__bindEvent_getElementById('id__article_search', 'keypress', (event) => {
+                        if (event.key !== 'Enter') return false;
+                        const article_id = event.target.value;
                         console.debug(`search article_id=${article_id} [app:keypress]`);
                         // window.location.replace(`search?article_id=${article_id}`);
                     })

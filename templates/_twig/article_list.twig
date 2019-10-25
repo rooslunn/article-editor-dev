@@ -1,4 +1,4 @@
-{% extends "index.twig" %}
+{#{% extends "index.twig" %}#}
 
 {% block container %}
     <h1>{{ section_title }}</h1>
@@ -51,27 +51,22 @@
 {% endblock %}
 
 {% block scripts %}
-    {{ parent() }}
+{#    {{ parent() }}#}
     <script>
-        __onReady(() => {
+        ds__onReady(() => {
             console.debug('[article_list:ready]');
             const timings = '{{ timings_json|raw }}';
             console.debug(JSON.parse(timings), '[article_list:timings]');
 
-            const $btn_select_all = document.getElementById('btn__select_all');
-            if (! $btn_select_all) {
-                console.debug('btn__select_all not found [article_list]')
-                return false;
-            }
-
             /*
-                Event binding
+                Article list checkbox processing
              */
-            const $change_list = document.querySelectorAll('input.article_status[type=checkbox]');
-            $btn_select_all.addEventListener('change', (e) => {
-                $change_list.forEach((elem) => {
-                    elem.checked = e.target.checked
+            ds__bindEvent_getElementById('btn__select_all', 'change', (event) => {
+                const $change_list = document.querySelectorAll('input.article_status[type=checkbox]');
+                $change_list.forEach((element) => {
+                    element.checked = event.target.checked
                 });
+                console.debug('well done [article_list:checked]')
             })
 
         });
