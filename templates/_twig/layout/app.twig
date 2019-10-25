@@ -59,7 +59,7 @@
                     };
 
                     request.onerror = function(error) {
-                        reject(error);
+                        reject('connection error');
                     };
 
                     request.send();
