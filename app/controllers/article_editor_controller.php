@@ -59,12 +59,16 @@ class article_editor_controller {
 
     public function article_list_dev()
     {
+        $end = microtime(true);
         $filters = input::expose(ArticleRepository::FILTERS);
         $articles = (new ArticleRepository())->filterBy($filters);
+        $end = microtime(true) - $end;
         $section_title = input::get('section_name');
         /* todo: Share data between views (cache?) */
         $sections = (new SectionRepository())->get();
+        $end = microtime(true) - $end;
         $permissions = ACL::permissions();
+        $end = microtime(true) - $end;
 
         display('article_list', compact('sections', 'section_title', 'articles', 'permissions'));
     }
