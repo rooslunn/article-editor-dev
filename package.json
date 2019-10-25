@@ -1,0 +1,7 @@
+{
+  "private": true,
+  "license": "license",
+  "dependencies": {
+    "sortablejs": "^1.10.1"
+  }
+}

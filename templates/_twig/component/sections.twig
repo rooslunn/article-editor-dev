@@ -2,12 +2,12 @@
     <input type="search" placeholder="Search Article Id" id="id__article_search"/>
 </div>
 
-<ul>
+<ul id="js__sections">
     <li class="homeLink">
         <a href="./">Home Page</a>
     </li>
     {% for item in sections %}
-        <li>
+        <li class="js__section">
             <a href="./article_list?section_id={{ item.section_id }}&section_name={{ item.section_title }}">
                 {{ item.section_title }} <p style="font-size:11px; display:inline;">({{ item.total }})</p>
             </a>
@@ -16,9 +16,22 @@
 </ul>
 
 {% block scripts %}
+    <style>
+        .sortable-ghost {
+            font-weight: bold;
+            background: wheat;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <script>
         ds__onReady(() => {
             console.debug('[sections:ready]');
+
+            const sections = document.getElementById('js__sections');
+            const sortable_sections = Sortable.create(sections, {
+                draggable: '.js__section',
+                animation: 150
+            });
         })
     </script>
 {% endblock %}

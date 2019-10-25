@@ -3,12 +3,6 @@
 use Dreamscape\Container\Container;
 
 if (! function_exists('app')) {
-    /**
-     * Get the available container instance.
-     *
-     * @param string $abstract
-     * @return mixed|Dreamscape\Foundation\Application
-     */
     function app($abstract = null)
     {
         if (is_null($abstract)) {
@@ -21,7 +15,7 @@ if (! function_exists('app')) {
 
 if (! function_exists('array_pluck')) {
     function array_pluck($items, $key) {
-        return array_map( function($item) use ($key) {
+        return array_map(static function($item) use ($key) {
             return is_object($item) ? $item->$key : $item[$key];
         }, $items);
     }
