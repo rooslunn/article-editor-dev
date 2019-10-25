@@ -37,7 +37,8 @@
 
                 ds__ajax_getHTML('article_list?' + searchParams.toString())
                     .then((html) => {
-                        document.getElementById('id__container').innerHTML = html;
+                        console.debug('html:', html);
+                        // document.getElementById('id__container').innerHTML = html;
                     })
                     .catch((error) => {
                         console.error(error);
