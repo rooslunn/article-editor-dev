@@ -58,8 +58,8 @@
                         }
                     };
 
-                    request.onerror = function() {
-                        reject(this);
+                    request.onerror = function(error) {
+                        reject(error);
                     };
 
                     request.send();
