@@ -75,6 +75,7 @@ class article_editor_controller {
 
         $permissions = ACL::permissions();
         $timings['04-permissions'] = microtime(true) - $end;
+        $timings['05-request'] = microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'];
 
         $timings_json = json_encode($timings);
 
