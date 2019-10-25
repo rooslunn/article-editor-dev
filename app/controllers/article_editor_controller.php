@@ -64,15 +64,17 @@ class article_editor_controller {
 
         $filters = input::expose(ArticleRepository::FILTERS);
         $articles = (new ArticleRepository())->filterBy($filters);
-        $timings['02-articles'] = (($end = microtime(true)) - $end);
+        $timings['02-articles'] = microtime(true) - $end;
+        $end = microtime(true);
 
         $section_title = input::get('section_name');
         /* todo: Share data between views (cache?) */
         $sections = (new SectionRepository())->get();
-        $timings['03-sections'] = (($end = microtime(true)) - $end);
+        $timings['03-sections'] = microtime(true) - $end;
+        $end = microtime(true);
 
         $permissions = ACL::permissions();
-        $timings['04-permissions'] = (($end = microtime(true)) - $end);
+        $timings['04-permissions'] = microtime(true) - $end;
 
         $timings_json = json_encode($timings);
 
