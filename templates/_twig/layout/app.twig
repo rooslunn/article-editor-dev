@@ -55,13 +55,13 @@
                             console.debug('promise.resolve [app:ds__ajax_getHTML]')
                             resolve(this.response);
                         } else {
-                            console.debug('promise.reject [app:ds__ajax_getHTML]')
+                            console.debug('promise.onload reject [app:ds__ajax_getHTML]')
                             reject(this.responseText);
                         }
                     };
 
                     request.onerror = function() {
-                        console.debug('promise.reject [app:ds__ajax_getHTML]')
+                        console.debug('promise.onerror reject [app:ds__ajax_getHTML]')
                         reject(this.responseText);
                     };
 
