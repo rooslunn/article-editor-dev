@@ -23,17 +23,6 @@
         __onReady(() => {
             console.debug('[sections:ready]');
 
-            const $sections = document.querySelectorAll('.js__article_sections');
-            if (! $sections) {
-                console.error('sections not found [sections:onclick')
-            }
-
-            $sections.addEventListener('onclick', (event) => {
-                const $target = event.target;
-                const section_id = $target.getAttribute('data-section_id');
-                const section_name = $target.getAttribute('data-section_name');
-                console.debug('section_id:', section_id, 'section_name:', section_name, '[sections:onclick]');
-            })
         })
     </script>
 {% endblock %}

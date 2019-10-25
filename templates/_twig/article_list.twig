@@ -65,8 +65,10 @@
             }
 
             /*
-                Event binding
+                Event bindings
              */
+
+            // article list checkbox processing
             const $change_list = document.querySelectorAll('input.article_status[type=checkbox]');
             $btn_select_all.addEventListener('change', (e) => {
                 $change_list.forEach((elem) => {
@@ -74,6 +76,18 @@
                 });
             })
 
+            // load section's articles asynchronously
+            const $sections = document.querySelectorAll('.js__article_sections');
+            if (! $sections) {
+                console.error('sections not found [sections:onclick')
+            }
+
+            $sections.addEventListener('onclick', (event) => {
+                const $target = event.target;
+                const section_id = $target.getAttribute('data-section_id');
+                const section_name = $target.getAttribute('data-section_name');
+                console.debug('section_id:', section_id, 'section_name:', section_name, '[sections:onclick]');
+            })
         });
     </script>
 {% endblock %}
