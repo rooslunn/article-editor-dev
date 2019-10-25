@@ -30,12 +30,10 @@
                 event.preventDefault();
                 const $target = event.target;
 
-                const url = new URL('article_list?');
-                const searchParams = new URLSearchParams(url.search);
+                const searchParams = new URLSearchParams('article_list?');
                 searchParams.append('section_id', $target.getAttribute('data-section_id'));
                 searchParams.append('section_name', $target.getAttribute('data-section_name'));
-                url.search = searchParams.toString();
-                console.debug('ajax url:', url.toString(), '[sections:onclick]');
+                console.debug('ajax url:', searchParams.toString(), '[sections:onclick]');
             })
 
 
