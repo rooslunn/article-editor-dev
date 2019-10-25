@@ -37,7 +37,7 @@
 
                 ds__ajax_getHTML(searchParams.toString()).then(
                     (html) => {
-                        
+                        document.getElementById('id__container').innerHTML = html;
                     }
                 ).catch(error => {
                     console.error(error);
