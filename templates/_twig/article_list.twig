@@ -55,6 +55,8 @@
     <script>
         __onReady(() => {
             console.debug('[article_list:ready]');
+            const timings = '{{ timings }}';
+            console.debug(JSON.parse(timings), '[article_list:timings]');
 
             const $btn_select_all = document.getElementById('btn__select_all');
             if (! $btn_select_all) {
