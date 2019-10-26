@@ -8,13 +8,14 @@
     </head>
     <body>
 
+        {% include 'component/global_js_func.twig' %}
+        
         <div id="mainContainer">
             {% block container %}
             {% endblock %}
         </div>
 
         {% block scripts %}
-            {% include 'component/global_js_func.twig' %}
             <script>
                 ds__onReady(() => {
                     console.debug('[app:ready]');
