@@ -1,0 +1,37 @@
+{% extends 'layout/playground.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .sortable-ghost {
+            font-weight: bold;
+            background: wheat;
+        }
+    </style>
+{% endblock %}
+
+{% block container %}
+    <div class="articleId-searchbar">
+        <input type="search" placeholder="Search Article Id" id="id__article_search" class="js__search_input"/>
+    </div>
+
+    <ul id="js__sections">
+        {% for item in sections %}
+            <li class="js__section">
+                <a href="./article_list?section_id={{ item.section_id }}&section_name={{ item.section_title }}">
+                    {{ item.section_title }} <p style="font-size:11px; display:inline;">({{ item.total }})</p>
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <script>
+        ds__onReady(() => {
+            console.debug('[organizer:ready]');
+        })
+    </script>
+{% endblock %}

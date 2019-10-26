@@ -49,7 +49,7 @@ if (! function_exists('view')) {
 }
 
 if (! function_exists('display')) {
-    function display($template, array $data) {
+    function display($template, array $data = []) {
         echo view($template, $data);
     }
 }

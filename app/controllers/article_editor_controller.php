@@ -82,6 +82,11 @@ class article_editor_controller {
         display('article_list', compact('sections', 'section_title', 'articles', 'permissions', 'timings_json'));
     }
 
+    public function organizer_dev()
+    {
+        display('organizer');
+    }
+
     /**
      * Main index page
 	 * @return void
