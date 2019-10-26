@@ -4,7 +4,9 @@
 namespace Dreamscape\Repository;
 
 
+use Dreamscape\Model\Article;
 use Dreamscape\Repository\Filters\ActiveArticleFilter;
+use Dreamscape\Repository\Filters\ArticleIdArticleFilter;
 use Dreamscape\Repository\Filters\RecentlyInsertedArticleFilter;
 use Dreamscape\Repository\Filters\RecentlyUpdatedArticleFilter;
 
@@ -21,7 +23,7 @@ final class ArticleRepository extends Repository
         ];
     }
 
-    private function queryAll()
+    private function queryShort()
     {
         $query = '
             SELECT article.article_id, article.article_url, article.article_title, 
@@ -35,19 +37,51 @@ final class ArticleRepository extends Repository
         ';
         return $query;
     }
+    
+    private function queryFull()
+    {
+        return '
+            SELECT article.article_id, article.file_id, article.article_url, article.article_title, article.article_description,
+                   article.article_tags, article.section_id, article.article_content, article.weight, article.status_id, 
+                   article.date_scanned, gs.status_name,
+                   article.date_published, article.date_updated, article.doc_type, 
+                   asec.section_title
+            FROM article article
+                INNER JOIN generic_status gs USING(status_id)
+                LEFT JOIN article_sections asec USING(section_id)
+        ';
+    }
 
     public function recenltyInserted($limit = 0)
     {
-        return $this->fetchAll($this->queryAll(), [
+        return $this->fetchAll($this->queryShort(), [
             new RecentlyInsertedArticleFilter(),
         ], $limit);
     }
 
     public function recenltyUpdated($limit = 0)
     {
-        return $this->fetchAll($this->queryAll(), [
+        return $this->fetchAll($this->queryShort(), [
             new RecentlyUpdatedArticleFilter(),
         ], $limit);
+    }
+
+    public function articleId($article_id)
+    {
+        return  $this->fetch($this->queryFull(), [
+            new ArticleIdArticleFilter($article_id)
+        ]);
+    }
+
+    public function findOrNew($article_id)
+    {
+        $data = [];
+        
+        if ((int) $article_id !== 0) {
+            $data = $this->articleId($article_id);
+        }
+
+        return Article::create($data);
     }
 
     public function filterBy(array $filters)
@@ -62,6 +96,7 @@ final class ArticleRepository extends Repository
             }
         }
 
-        return $this->fetchAll($this->queryAll(), $query_filters);
+        return $this->fetchAll($this->queryShort(), $query_filters);
     }
+
 }

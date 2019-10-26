@@ -23,7 +23,7 @@ final class SectionRepository extends Repository
         return $query;
     }
 
-    public function get()
+    public function getAll()
     {
         return $this->fetchAll($this->queryAll());
     }

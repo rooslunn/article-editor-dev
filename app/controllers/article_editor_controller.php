@@ -3,8 +3,13 @@
 use Dreamscape\Foundation\ACL;
 use Dreamscape\Repository\ArticleCirlcesRepository;
 use Dreamscape\Repository\ArticleRepository;
+use Dreamscape\Repository\ArticleStatusRepository;
+use Dreamscape\Repository\Enum\DocTypeEnum;
+use Dreamscape\Repository\Enum\LocaleEnum;
+use Dreamscape\Repository\Enum\ResellerEnum;
 use Dreamscape\Repository\Repository;
 use Dreamscape\Repository\SectionRepository;
+use Dreamscape\Validators\ArticleValidator;
 
 class article_editor_controller {
 
@@ -43,6 +48,8 @@ class article_editor_controller {
 
     public function index_dev()
     {
+        ACL::authUser();
+
         $circlesRepository = new ArticleCirlcesRepository();
         $circles = $circlesRepository->all();
 
@@ -50,7 +57,7 @@ class article_editor_controller {
         $recently_inserted = $articles->recenltyInserted(Repository::RECENTLY_QUERY_LIMIT);
         $recently_updated = $articles->recenltyUpdated(Repository::RECENTLY_QUERY_LIMIT);
 
-        $sections = (new SectionRepository())->get();
+        $sections = (new SectionRepository())->getAll();
 
         display('index',
             compact('sections', 'circles', 'recently_inserted', 'recently_updated')
@@ -59,6 +66,7 @@ class article_editor_controller {
 
     public function article_list_dev()
     {
+        /* todo: make Timings global to track (Iginition, Blackfire) */
         $timings = [];
         $timings['01-start'] = ($end = microtime(true));
 
@@ -69,11 +77,11 @@ class article_editor_controller {
 
         $section_title = input::get('section_name');
         /* todo: Share data between views (cache?, ajax?) */
-        $sections = (new SectionRepository())->get();
+        $sections = (new SectionRepository())->getAll();
         $timings['03-sections'] = microtime(true) - $end;
         $end = microtime(true);
 
-        $permissions = ACL::permissions();
+        $permissions = ACL::roles();
         $timings['04-permissions'] = microtime(true) - $end;
         $timings['05-request'] = microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'];
 
@@ -87,13 +95,199 @@ class article_editor_controller {
         display('organizer');
     }
 
+    public function edit_dev()
+    {
+        ACL::authUser();
 
-	/**
-	 * Show article preview
-	 *
-	 * @param bool $open_on_crazy if set it false - article will be opened in tool, if true - on crazy
-	 * @return void
-	 */
+        $permissions = ACL::roles();
+        $sections = (new SectionRepository())->getAll();
+        $statuses = (new ArticleStatusRepository())->getAll();
+
+        $doc_types = DocTypeEnum::all();
+        $locales = LocaleEnum::all();
+        $resellers = ResellerEnum::all();
+
+        $article_check = ArticleValidator::check(input::get('article_id'));
+        $article = (new ArticleRepository())->findOrNew(input::get('article_id'));
+
+        display('editor',
+            compact('article', 'article_check', 'doc_types', 'permissions', 'sections',
+                'statuses', 'locales', 'resellers')
+        );
+    }
+
+    public function edit() {
+	    ACL::authUser();
+
+        $this->_template->loadTemplateFile('templates/editor.tpl');
+
+        $article = array();
+        if (input::has('article_id')) {
+            $article = $this->article_editor->get_article_data(input::get('article_id'));
+
+            if (empty($article)) {
+                header('Location: ' . ARTICLE_EDITOR_ROOT_PATH . 'edit'); exit;
+            }
+        }
+
+        if (!empty($article)) {
+            $article_issues = $this->article_content_issues->check_current_article_for_issues(input::get('article_id'));
+            if ($article_issues !== true) {
+                $this->_template->setCurrentBlock('issue_block');
+                $this->_template->setVariable(array('article_issues' => $article_issues));
+                $this->_template->parseCurrentBlock();
+            }
+
+            /** @TODO remove article_tags field and replace articles from uncategorized article sections */
+            $article['article_tags'] = $article['section_title'] ?: $article['article_tags'];
+            $article['section_name'] = str_replace(' ', '-', $article['article_tags']);
+            $article['article_tags'] .= !$article['section_title'] ? '(uncategorized)' : '';
+
+            $article['action'] = 'update';
+            $article['article_input_title'] = $article['article_title'];
+            $article['date_scanned'] = date('j M Y', strtotime($article['date_scanned']));
+            $article['date_published'] = ($article['date_published'] == '0000-00-00 00:00:00') ? '-' : date('j M Y', strtotime($article['date_published']));
+            $article['date_updated'] = ($article['date_updated'] == '0000-00-00 00:00:00') ? '-' : date('j M Y', strtotime($article['date_updated']));
+
+            $article['search_tags_count'] = count($article['article_search_tags']);
+            $article['article_search_tags'] = implode("\n", $article['article_search_tags']);
+
+            $article['related_sections'] = $this->article_editor->get_article_additional_sections($article['article_id']);
+            $article['article_images'] = $this->article_editor->get_article_attachments(input::get('article_id'));
+
+            if (in_array($article['doc_type'], array('guide', 'tutorial'))) {
+                $this->_template->touchBlock($article['doc_type'].'_selected');
+            }
+        } else {
+            $article = array(
+                'section_name' => 'Category',
+                'article_tags' => 'Category',
+                'article_id' => 0,
+                'article_title' => 'Title',
+                'article_input_title' => '',
+                'article_url' => '',
+                'article_description' => '',
+                'article_content' => '',
+                'article_images' => array(),
+                'related_sections' => array(),
+                'action' => 'save',
+            );
+
+            $this->_template->hideBlock('guide_selected');
+        }
+
+        $this->_template->setCurrentBlock('article_images');
+
+        foreach ($article['article_images'] as $image) {
+            $this->_template->setVariable($image);
+            $this->_template->parseCurrentBlock();
+        }
+
+        $statuses = $this->article_editor->get_statuses_list();
+        $this->_template->setCurrentBlock('article_status_row');
+
+        foreach ($statuses as $status) {
+            if ($article['status_id'] == $status['status_id']) {
+                $status['status_selected'] = 'selected="selected"';
+            }
+
+            if ((3 == $status['status_id'] || 5 == $status['status_id']) //3-Published, 5-Unpublished
+                && !crms_user::check_current_permissions('ARTICLE_TOOL_PUBLISHER_ROLE')
+            ) {
+                continue;
+            }
+
+            $this->_template->setVariable($status);
+            $this->_template->parseCurrentBlock();
+        }
+
+        $valid_locales = array('ae', 'au', 'in', 'nz', 'uk', 'us', 'hk', 'id', 'my', 'ph', 'sg');
+        $this->_template->setCurrentBlock('excluded_article_row');
+
+        foreach ($valid_locales as $excluded_locale) {
+            $exclude_data = array(
+                'excluded_locale' => $excluded_locale,
+                'excluded_locale_uc' => strtoupper($excluded_locale),
+                'excluded_locale_selected' => in_array($excluded_locale, $article['excluded_locales']) ? 'selected="selected"' : '',
+            );
+
+            $this->_template->setVariable($exclude_data);
+            $this->_template->parseCurrentBlock();
+        }
+
+        $valid_resellers_to_exclude = array(
+            1 => 'AustDomains',
+            1344 => 'CrazyDomains',
+            1023 => 'Sitebeat',
+        );
+
+        $this->_template->setCurrentBlock('excluded_reseller_row');
+
+        foreach ($valid_resellers_to_exclude as $reseller_id => $reseller_name) {
+            $exclude_reseller_data = array(
+                'exclude_reseller_id' => $reseller_id,
+                'excluded_reseller_name' => $reseller_name,
+                'excluded_reseller_selected' => in_array($reseller_id, $article['excluded_resellers']) ? 'selected="selected"' : '',
+            );
+
+            $this->_template->setVariable($exclude_reseller_data);
+            $this->_template->parseCurrentBlock();
+        }
+
+        $sections = $this->article_editor->get_sections_list();
+
+        if (!input::has('article_id')) {
+            array_unshift(
+                $sections,
+                array(
+                    'section_selected' => 'selected="selected"',
+                    'section_id' => '',
+                    'section_title' => '-- Select Category --',
+                    'option_disabled' => 'disabled="disabled"',
+                )
+            );
+        }
+
+        foreach ($sections as $section) {
+            if ($article['article_tags'] == $section['section_title']) {
+                $section['option_section_selected'] = 'selected="selected"';
+            }
+
+            $section['option_section_title'] = $section['section_title'];
+            $section['option_section_id'] = $section['section_id'];
+            unset($section['section_title'], $section['section_id']);
+
+            $this->_template->setCurrentBlock('article_sections_row');
+            $this->_template->setVariable($section);
+            $this->_template->parseCurrentBlock();
+
+            $this->_template->setCurrentBlock('related_section_row');
+
+            if ($section['option_section_id'] == $article['section_id']) {
+                $section['option_disabled'] = 'disabled';
+                $section['option_section_selected'] = 'selected="selected"';
+            }
+
+            if (in_array($section['option_section_id'], $article['related_sections'])) {
+                $section['option_section_selected'] = 'selected="selected"';
+            }
+
+            $this->_template->setVariable($section);
+            $this->_template->parseCurrentBlock();
+        }
+
+        unset($article['status_name'], $article['status_id']);
+
+        if (crms_user::check_current_permissions('ARTICLE_TOOL_PUBLISHER_ROLE')) {
+            $this->_template->touchBlock('publish_role');
+        }else{
+            $this->_template->hideBlock('publish_role');
+        }
+
+        $this->_template->setVariable($article);
+        $this->_template->show();
+    }
+
 	public function preview($open_on_crazy = true) {
 		$article_id = input::get('id');
 
@@ -111,12 +305,6 @@ class article_editor_controller {
 				$this->_template->show();
 			}
 		}
-	}
-
-	public function add() {
-        ACL::authUser();
-		$this->_template->loadTemplateFile('templates/editor.tpl');
-		$this->_template->show();
 	}
 
 	public function new_articles_list() {
@@ -252,183 +440,6 @@ class article_editor_controller {
 		$this->_template->show();
 	}
 
-	/**
-	 * Show edit page
-	 */
-	public function edit() {
-		if (!crms_user::check_current_permissions('ARTICLE_TOOL_EDITOR_ROLE')
-			&& !crms_user::check_current_permissions('ARTICLE_TOOL_PUBLISHER_ROLE')) {
-			redirect('/tools/article_editor-dev');
-		}
-
-		$this->_template->loadTemplateFile('templates/editor.tpl');
-
-		$article = array();
-		if (input::has('article_id')) {
-			$article = $this->article_editor->get_article_data(input::get('article_id'));
-
-			if (empty($article)) {
-				header('Location: ' . ARTICLE_EDITOR_ROOT_PATH . 'edit'); exit;
-			}
-		}
-
-		if (!empty($article)) {
-			$article_issues = $this->article_content_issues->check_current_article_for_issues(input::get('article_id'));
-			if ($article_issues !== true) {
-				$this->_template->setCurrentBlock('issue_block');
-				$this->_template->setVariable(array('article_issues' => $article_issues));
-				$this->_template->parseCurrentBlock();
-			}
-
-			/** @TODO remove article_tags field and replace articles from uncategorized article sections */
-			$article['article_tags'] = $article['section_title'] ? $article['section_title'] : $article['article_tags'];
-			$article['section_name'] = str_replace(' ', '-', $article['article_tags']);
-			$article['article_tags'] .= !$article['section_title'] ? '(uncategorized)' : '';
-
-			$article['action'] = 'update';
-			$article['article_input_title'] = $article['article_title'];
-			$article['article_images'] = $this->article_editor->get_article_attachments(input::get('article_id'));
-			$article['date_scanned'] = date('j M Y', strtotime($article['date_scanned']));
-			$article['date_published'] = ($article['date_published'] == '0000-00-00 00:00:00') ? '-' : date('j M Y', strtotime($article['date_published']));
-			$article['date_updated'] = ($article['date_updated'] == '0000-00-00 00:00:00') ? '-' : date('j M Y', strtotime($article['date_updated']));
-
-			$article['search_tags_count'] = sizeof($article['article_search_tags']);
-			$article['article_search_tags'] = implode("\n", $article['article_search_tags']);
-
-			$article['related_sections'] = $this->article_editor->get_article_additional_sections($article['article_id']);
-
-			if (in_array($article['doc_type'], array('guide', 'tutorial'))) {
-				$this->_template->touchBlock($article['doc_type'].'_selected');
-			}
-		} else {
-			$article = array(
-				'section_name' => 'Category',
-				'article_tags' => 'Category',
-				'article_id' => 0,
-				'article_title' => 'Title',
-				'article_input_title' => '',
-				'article_url' => '',
-				'article_description' => '',
-				'article_content' => '',
-				'article_images' => array(),
-				'related_sections' => array(),
-				'action' => 'save',
-			);
-
-			$this->_template->hideBlock('guide_selected');
-		}
-
-		$this->_template->setCurrentBlock('article_images');
-
-		foreach ($article['article_images'] as $image) {
-			$this->_template->setVariable($image);
-			$this->_template->parseCurrentBlock();
-		}
-
-		$statuses = $this->article_editor->get_statuses_list();
-		$this->_template->setCurrentBlock('article_status_row');
-
-		foreach ($statuses as $status) {
-			if ($article['status_id'] == $status['status_id']) {
-				$status['status_selected'] = 'selected="selected"';
-			}
-
-			if ((3 == $status['status_id'] || 5 == $status['status_id']) //3-Published, 5-Unpublished
-				&& !crms_user::check_current_permissions('ARTICLE_TOOL_PUBLISHER_ROLE')
-			) {
-				continue;
-			}
-
-			$this->_template->setVariable($status);
-			$this->_template->parseCurrentBlock();
-		}
-
-		$valid_locales = array('ae', 'au', 'in', 'nz', 'uk', 'us', 'hk', 'id', 'my', 'ph', 'sg');
-		$this->_template->setCurrentBlock('excluded_article_row');
-
-		foreach ($valid_locales as $excluded_locale) {
-			$exclude_data = array(
-				'excluded_locale' => $excluded_locale,
-				'excluded_locale_uc' => strtoupper($excluded_locale),
-				'excluded_locale_selected' => in_array($excluded_locale, $article['excluded_locales']) ? 'selected="selected"' : '',
-			);
-
-			$this->_template->setVariable($exclude_data);
-			$this->_template->parseCurrentBlock();
-		}
-
-		$valid_resellers_to_exclude = array(
-			1 => 'AustDomains',
-			1344 => 'CrazyDomains',
-			1023 => 'Sitebeat',
-		);
-
-		$this->_template->setCurrentBlock('excluded_reseller_row');
-
-		foreach ($valid_resellers_to_exclude as $reseller_id => $reseller_name) {
-			$exclude_reseller_data = array(
-				'exclude_reseller_id' => $reseller_id,
-				'excluded_reseller_name' => $reseller_name,
-				'excluded_reseller_selected' => in_array($reseller_id, $article['excluded_resellers']) ? 'selected="selected"' : '',
-			);
-
-			$this->_template->setVariable($exclude_reseller_data);
-			$this->_template->parseCurrentBlock();
-		}
-
-		$sections = $this->article_editor->get_sections_list();
-
-		if (!input::has('article_id')) {
-			array_unshift(
-				$sections,
-				array(
-					'section_selected' => 'selected="selected"',
-					'section_id' => '',
-					'section_title' => '-- Select Category --',
-					'option_disabled' => 'disabled="disabled"',
-				)
-			);
-		}
-
-		foreach ($sections as $section) {
-			if ($article['article_tags'] == $section['section_title']) {
-				$section['option_section_selected'] = 'selected="selected"';
-			}
-
-			$section['option_section_title'] = $section['section_title'];
-			$section['option_section_id'] = $section['section_id'];
-			unset($section['section_title'], $section['section_id']);
-
-			$this->_template->setCurrentBlock('article_sections_row');
-			$this->_template->setVariable($section);
-			$this->_template->parseCurrentBlock();
-
-			$this->_template->setCurrentBlock('related_section_row');
-
-			if ($section['option_section_id'] == $article['section_id']) {
-				$section['option_disabled'] = 'disabled';
-				$section['option_section_selected'] = 'selected="selected"';
-			}
-
-			if (in_array($section['option_section_id'], $article['related_sections'])) {
-				$section['option_section_selected'] = 'selected="selected"';
-			}
-
-			$this->_template->setVariable($section);
-			$this->_template->parseCurrentBlock();
-		}
-
-		unset($article['status_name'], $article['status_id']);
-
-		if (crms_user::check_current_permissions('ARTICLE_TOOL_PUBLISHER_ROLE')) {
-			$this->_template->touchBlock('publish_role');
-		}else{
-			$this->_template->hideBlock('publish_role');
-		}
-
-		$this->_template->setVariable($article);
-		$this->_template->show();
-	}
 
 	public function save_article() {
 		echo json_encode($this->article_editor->save_article(input::get_array('post')));

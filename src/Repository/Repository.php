@@ -71,14 +71,23 @@ abstract class Repository
         return $query;
     }
 
-    protected function fetchAll($query, array $filters = [], $limit = 0, $fetch_style = PDO::FETCH_ASSOC)
+    protected function queryPrepare(&$query, array $filters = [], $limit = 0)
     {
         $query = trim($query);
-
         $query = $this->applyFilters($query, $filters);
         $query = $this->applyLimit($query, $limit);
+    }
 
+    protected function fetchAll($query, array $filters = [], $limit = 0, $fetch_style = PDO::FETCH_ASSOC)
+    {
+        $this->queryPrepare($query, $filters, $limit);
         return $this->db()->query($query)->fetchAll($fetch_style);
+    }
+
+    protected function fetch($query, array $filters = [])
+    {
+        $this->queryPrepare($query, $filters);
+        return $this->db()->query($query)->fetch();
     }
 
     protected function toFilterClass($filter_name, $postfix = '')

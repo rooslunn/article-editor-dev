@@ -17,7 +17,7 @@ final class ActiveArticleFilter extends ArticleFilter implements QueryFilterCont
 
     public function where()
     {
-        return $this->where_clause($this->aliased('status_id'), '!=', $this->status_deleted);
+        return $this->where_clause($this->aliased('status_id'), '!=', (int) $this->status_deleted);
     }
 
     public function orderBy()

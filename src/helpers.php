@@ -28,7 +28,7 @@ if (! function_exists('array_flatten')) {
             if (!is_array($item)) {
                 $result[] = $item;
             } else {
-                array_push($result, ...array_values($item));
+                array_push($result, array_values($item));
             }
         }
 

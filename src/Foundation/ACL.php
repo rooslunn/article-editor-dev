@@ -8,7 +8,7 @@ final class ACL
 {
     const ARTICLE_TOOL_ROLES = ['ARTICLE_TOOL_PUBLISHER_ROLE', 'ARTICLE_TOOL_EDITOR_ROLE'];
 
-    public static function permissions()
+    public static function roles()
     {
         $result = [];
         foreach (self::ARTICLE_TOOL_ROLES as $role) {
@@ -19,10 +19,12 @@ final class ACL
 
     public static function authUser()
     {
-        if (!crms_user::check_current_permissions('ARTICLE_TOOL_EDITOR_ROLE') &&
-            !crms_user::check_current_permissions('ARTICLE_TOOL_PUBLISHER_ROLE')
-        ) {
-            redirect('/tools/article_editor-dev');
+        foreach (self::ARTICLE_TOOL_ROLES as $role) {
+            if (! \crms_user::check_current_permissions($role) ) {
+                return false;
+            }
         }
+        return true;
     }
+
 }

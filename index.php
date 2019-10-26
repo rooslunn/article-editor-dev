@@ -48,7 +48,30 @@ app()->bind('db', new \Dreamscape\Database\DatabaseContracted(DB_SERVER, DB_SERV
 
 /* Twig */
 $twig_loader = new \Twig\Loader\FilesystemLoader('templates/_twig');
-app()->bind('twig', new Twig\Environment($twig_loader));
+$twig = new Twig\Environment($twig_loader);
+
+$twig_ext_funcs = [
+    'attribute_if_in' => static function ($needle, $haystack, $attribute) {
+        if (! is_array($haystack)) {
+            $haystack = [$haystack];
+        }
+        return in_array($needle, $haystack, false) ? $attribute : '';
+    },
+];
+
+$twig_ext_filters = [
+    'only_allowed' => static function ($value, array $allowed) {
+        return in_array($value, $allowed, false);
+    },
+];
+
+foreach ($twig_ext_funcs as $name => $closure) {
+    $twig->addFunction(new \Twig\TwigFunction($name, $closure));
+}
+foreach ($twig_ext_filters as $name => $closure) {
+    $twig->addFilter(new \Twig\TwigFilter($name, $closure));
+}
+app()->bind('twig', $twig);
 
 /*
  * Full Steam Ahead!
