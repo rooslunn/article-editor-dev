@@ -47,8 +47,8 @@ class article_editor_controller {
         $circles = $circlesRepository->all();
 
         $articles = new ArticleRepository();
-        $recently_inserted = $articles->recenltyInserted(Repository::DEFAULT_QUERY_LIMIT);
-        $recently_updated = $articles->recenltyUpdated(Repository::DEFAULT_QUERY_LIMIT);
+        $recently_inserted = $articles->recenltyInserted(Repository::RECENTLY_QUERY_LIMIT);
+        $recently_updated = $articles->recenltyUpdated(Repository::RECENTLY_QUERY_LIMIT);
 
         $sections = (new SectionRepository())->get();
 
@@ -87,60 +87,6 @@ class article_editor_controller {
         display('organizer');
     }
 
-    /**
-     * Main index page
-	 * @return void
-	 */
-	public function index() {
-		if (input::has('section_name')) {
-			$this->_template->loadTemplateFile('templates/article_list.tpl');
-
-			if (input::get('section_name') != '') {
-				$replace = preg_replace('/\-/', ' ', input::get('section_name'));
-			} else {
-				$replace = self::SEARCH_RESULTS;
-			}
-
-			$this->_template->setVariable('current_section_name', $replace);
-			$this->parse_sections()->get_articles();
-		} else if (input::has('article_id')) {
-			if (input::get('section_name') != '') {
-				$replace = preg_replace('/\-/', ' ', input::get('section_name'));
-			} else {
-				$replace = self::SEARCH_RESULTS;
-			}
-
-			$this->_template->loadTemplateFile('templates/article_list.tpl');
-			$this->_template->setVariable('current_section_name', $replace);
-			$this->parse_sections()->get_articles();
-		} else {
-		    $current_section_name = $this->resolveSectionName(input::get('section_name'));
-		    $sections = $this->article_editor->get_sections_list();
-
-            $circlesRepository = new ArticleCirlcesRepository(app('db'));
-            $circles = $circlesRepository->all();
-
-            $articles = new ArticleRepository(app('db'));
-            $recently_inserted = $articles->recenltyInserted(Repository::DEFAULT_QUERY_LIMIT);
-            $recently_updated = $articles->recenltyUpdated(Repository::DEFAULT_QUERY_LIMIT);
-
-            display('index',
-                compact('current_section_name', 'sections', 'circles', 'recently_inserted', 'recently_updated')
-            );
-		}
-
-		if (crms_user::check_current_permissions('ARTICLE_TOOL_PUBLISHER_ROLE')) {
-			$this->_template->touchBlock('publish_role');
-		} else if (crms_user::check_current_permissions('ARTICLE_TOOL_EDITOR_ROLE')) {
-			$this->_template->touchBlock('edit_role');
-			$this->_template->hideBlock('publish_role');
-		} else {
-			$this->_template->hideBlock('edit_role');
-			$this->_template->hideBlock('edit_role_footer');
-		}
-
-		$this->_template->show();
-	}
 
 	/**
 	 * Show article preview
@@ -168,12 +114,7 @@ class article_editor_controller {
 	}
 
 	public function add() {
-		if (!crms_user::check_current_permissions('ARTICLE_TOOL_EDITOR_ROLE') &&
-			!crms_user::check_current_permissions('ARTICLE_TOOL_PUBLISHER_ROLE')
-		) {
-			redirect('/tools/article_editor-dev');
-		}
-
+        ACL::authUser();
 		$this->_template->loadTemplateFile('templates/editor.tpl');
 		$this->_template->show();
 	}

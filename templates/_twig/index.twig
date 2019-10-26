@@ -1,30 +1,37 @@
 {% extends "layout/app.twig" %}
 
-{% block sections %}
-    {% include 'component/sections.twig' with {'sections': sections} %}
-{% endblock %}
-
 {% block container %}
-    <h1>Doc Editor</h1>
-    <!------------------------ CIRCLES ----------------------------------------------->
-    {%  for item in circles %}
-        <div class="circle">
-            <div class="insideCircle">
-                <h2>{{ item.status_count }}</h2>
-                <a href="./article_list?status_id={{ item.status_id }}"
-                   id="id__status_{{ item.status_id }}" class="status" style="color: {{ item.status_color }}">{{ item.status_name }}
-                </a>
-            </div>
-        </div>
-    {% endfor %}
-    <!------------------------ /CIRCLES ----------------------------------------------->
-    <div class="new-articleList">
-        <h2 class="subTitles-homePage"><a href="./article_list?filter=recently_inserted">New Articles</a></h2>
-        {% include 'component/article_table_index.twig' with {'articles': recently_inserted} %}
+
+    <div class="articleListTitle">
+        {% block sections %}
+            {% include 'component/sections.twig' with {'sections': sections} %}
+        {% endblock %}
     </div>
-    <div class="lastUpdated-articleList">
-        <h2 class="subTitles-homePage"><a href="./article_list?category=recently_updated">Last Updated</a></h2>
-        {% include 'component/article_table_index.twig' with {'articles': recently_updated} %}
+
+    <div class="articleLinks-container" id="id__container">
+        {% block article_list %}
+            <h1>Doc Editor</h1>
+            <!------------------------ CIRCLES ----------------------------------------------->
+            {%  for item in circles %}
+                <div class="circle">
+                    <div class="insideCircle">
+                        <h2>{{ item.status_count }}</h2>
+                        <a href="./article_list?status_id={{ item.status_id }}"
+                           id="id__status_{{ item.status_id }}" class="status" style="color: {{ item.status_color }}">{{ item.status_name }}
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+            <!------------------------ /CIRCLES ----------------------------------------------->
+            <div class="new-articleList">
+                <h2 class="subTitles-homePage"><a href="./article_list?filter=recently_inserted">New Articles</a></h2>
+                {% include 'component/article_table_index.twig' with {'articles': recently_inserted} %}
+            </div>
+            <div class="lastUpdated-articleList">
+                <h2 class="subTitles-homePage"><a href="./article_list?category=recently_updated">Last Updated</a></h2>
+                {% include 'component/article_table_index.twig' with {'articles': recently_updated} %}
+            </div>
+        {% endblock %}
     </div>
 {% endblock %}
 

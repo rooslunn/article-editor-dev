@@ -16,4 +16,13 @@ final class ACL
         }
         return $result;
     }
+
+    public static function authUser()
+    {
+        if (!crms_user::check_current_permissions('ARTICLE_TOOL_EDITOR_ROLE') &&
+            !crms_user::check_current_permissions('ARTICLE_TOOL_PUBLISHER_ROLE')
+        ) {
+            redirect('/tools/article_editor-dev');
+        }
+    }
 }

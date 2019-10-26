@@ -10,7 +10,7 @@ abstract class Repository
     /* @var DatabaseContract */
     private $db;
 
-    const DEFAULT_QUERY_LIMIT = 5;
+    const RECENTLY_QUERY_LIMIT = 5;
 
     const FILTERS_NAMESPACE = 'Dreamscape\Repository\Filters';
 

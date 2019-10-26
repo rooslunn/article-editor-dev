@@ -1,6 +1,11 @@
 {% extends "index.twig" %}
 
-{% block container %}
+{% block styles %}
+    {{ parent() }}
+    <link rel="stylesheet" href="public/css/article-list.css" type="text/css"/>
+{% endblock %}
+
+{% block article_list %}
     <h1>{{ section_title }}</h1>
 
     <div class="buttonsBar">
@@ -47,7 +52,6 @@
         {% include 'component/article_action_bar.twig' with {'permissions': permissions} %}
     </div>
 
-    </div>
 {% endblock %}
 
 {% block scripts %}

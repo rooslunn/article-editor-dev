@@ -42,6 +42,7 @@ class router {
 
 			self::$_root_path . 'add' => 'article_editor_controller@add',
 			self::$_root_path . 'edit' => 'article_editor_controller@edit',
+
 			self::$_root_path . 'new_articles_list' => 'article_editor_controller@new_articles_list',
 			self::$_root_path . 'article_list_status' => 'article_editor_controller@article_list_status',
 			self::$_root_path . 'articles_missing_tags_list' => 'article_editor_controller@articles_missing_tags_list',

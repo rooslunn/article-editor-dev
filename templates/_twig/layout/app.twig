@@ -3,21 +3,14 @@
     <head>
         <meta charset="UTF-8">
         <title>Article List</title>
-        <link rel="stylesheet" href="public/css/article-list.css" type="text/css"/>
+        {% block styles %}
+        {% endblock %}
     </head>
     <body>
 
         <div id="mainContainer">
-            <div class="articleListTitle">
-                {% block sections %}
-                {% endblock %}
-            </div>
-
-            <div class="articleLinks-container" id="id__container">
-                {% block container %}
-                {% endblock %}
-            </div>
-
+            {% block container %}
+            {% endblock %}
         </div>
 
         {% block scripts %}
