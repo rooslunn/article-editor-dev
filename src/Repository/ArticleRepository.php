@@ -93,6 +93,8 @@ final class ArticleRepository extends Repository
             if (class_exists($filter_class)) {
                 $filter_param = $filters[$filter_name];
                 $query_filters[] = (new $filter_class($filter_param));
+            } else {
+                throw new \InvalidArgumentException("Filter $filter_class not found");
             }
         }
 
