@@ -8,7 +8,7 @@
 
     <div class="articleListTitle">
         {% block sections %}
-            {% include 'component/sections.twig' with {'sections': sections} %}
+            {% include 'component/sections.twig' with {'sections': sections, 'checkbox': false} %}
         {% endblock %}
     </div>
 
