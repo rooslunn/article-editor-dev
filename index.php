@@ -49,8 +49,12 @@ require __DIR__.'/vendor/autoload.php';
 app()->bind('db', new \Dreamscape\Database\DatabaseContracted(DB_SERVER, DB_SERVER_USERNAME, DB_SERVER_PASSWORD, DB_NAME));
 
 /* Twig */
+$twig_settings = [];
+if (! environment::is_development()) {
+    $twig_settings['cache'] = '/templates/_twig/_cache';
+}
 $twig_loader = new \Twig\Loader\FilesystemLoader('templates/_twig');
-$twig = new Twig\Environment($twig_loader);
+$twig = new Twig\Environment($twig_loader, $twig_settings);
 
 $twig_ext_funcs = [
     'attribute_if_in' => static function ($needle, $haystack, $attribute) {
@@ -75,7 +79,8 @@ foreach ($twig_ext_filters as $name => $closure) {
 }
 
 $twig->addGlobal('permissions', ACL::roles());
-$twig->addGlobal('PREVIEW_LOCATION', $location = PREVIEW_LOCATION);
+$twig->addGlobal('TWIG_PREVIEW_LOCATION', PREVIEW_LOCATION);
+$twig->addGlobal('TWIG_REQUEST_URI', $_SERVER['REQUEST_URI']);
 
 app()->bind('twig', $twig);
 

@@ -29,6 +29,14 @@
         {% include 'component/article_action_bar.twig' with {'permissions': permissions} %}
     </div>
 
+    {% if paginator %}
+        {% import "macro/pagination.twig" as pagination %}
+        {% set page_uri = TWIG_REQUEST_URI ~ '&page=' %}
+        <div id="paginator">
+            {{ pagination.paginate(paginator.total, paginator.current, page_uri) }}
+        </div>
+    {% endif %}
+
 {% endblock %}
 
 {% block scripts %}

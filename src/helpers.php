@@ -67,3 +67,12 @@ if (! function_exists('string_camel')) {
     }
 }
 
+if (! function_exists('valdef')) {
+    function valdef($value, $default) {
+        if ((int) $value === 0) {
+            $value = $default;
+        }
+        return $value;
+    }
+}
+

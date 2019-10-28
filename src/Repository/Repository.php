@@ -71,16 +71,40 @@ abstract class Repository
         return $query;
     }
 
-    protected function queryPrepare(&$query, array $filters = [], $limit = 0)
+    protected function applyOffset($query, $offset)
+    {
+        if ($offset > 0) {
+            return "{$query} offset {$offset}";
+        }
+
+        return $query;
+    }
+
+    protected function queryPrepareForPage(&$query, $filters = [], $page, $per_page = 15)
+    {
+        $offset = ($page - 1) * $per_page;
+        $limit = $per_page;
+
+        $this->queryPrepare($query, $filters, $limit, $offset);
+    }
+
+    protected function queryPrepare(&$query, array $filters = [], $limit = 0, $offset = 0)
     {
         $query = trim($query);
         $query = $this->applyFilters($query, $filters);
         $query = $this->applyLimit($query, $limit);
+        $query = $this->applyOffset($query, $offset);
     }
 
-    protected function fetchAll($query, array $filters = [], $limit = 0, $fetch_style = PDO::FETCH_ASSOC)
+    protected function fetchAll($query, array $filters = [], $limit = 0, $offset = 0, $fetch_style = PDO::FETCH_ASSOC)
     {
-        $this->queryPrepare($query, $filters, $limit);
+        $this->queryPrepare($query, $filters, $limit, $offset);
+        return $this->db()->query($query)->fetchAll($fetch_style);
+    }
+
+    protected function forPage($query, array $filters = [], $page = 1, $per_page = 15, $fetch_style = PDO::FETCH_ASSOC)
+    {
+        $this->queryPrepareForPage($query, $filters, $page, $per_page);
         return $this->db()->query($query)->fetchAll($fetch_style);
     }
 

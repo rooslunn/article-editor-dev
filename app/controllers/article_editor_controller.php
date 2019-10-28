@@ -68,28 +68,18 @@ class article_editor_controller {
 
     public function article_list()
     {
-        /* todo: make Track Timings global (?Iginition, ?Blackfire) */
-        $timings = [];
-        $timings['01-start'] = ($end = microtime(true));
-
         $filters = input::expose(ArticleRepository::FILTERS);
-        $articles = (new ArticleRepository())->filterBy($filters);
-        $timings['02-articles'] = microtime(true) - $end;
-        $end = microtime(true);
+        $currentPage = valdef(input::get('page'), 1);
+        $paginator = (new Dreamscape\Paginator\Paginator(
+                (new ArticleRepository())->filterBy($filters, 0))
+            )->paginate($currentPage);
+        $articles = (new ArticleRepository())->filterBy($filters, $currentPage);
 
         $section_title = input::get('section_name');
-        /* todo: Share data between views (cache?, ajax?) */
         $sections = (new SectionRepository())->getAll();
-        $timings['03-sections'] = microtime(true) - $end;
-        $end = microtime(true);
 
-        $timings_json = json_encode($timings);
-
-        $view = view('article_list', compact('sections', 'section_title', 'articles', 'timings_json'));
-        $timings['06-render'] = microtime(true) - $end;
-        echo $view;
-
-//        display('article_list', compact('sections', 'section_title', 'articles', 'timings_json'));
+        $timings_json = json_encode([]);
+        display('article_list', compact('sections', 'section_title', 'articles', 'timings_json', 'paginator'));
     }
 
     public function organizer()

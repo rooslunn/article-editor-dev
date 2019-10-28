@@ -24,6 +24,6 @@ class ArticleImagesRepository extends Repository
         if ((int) $article_id === 0) {
             return [];
         }
-        return $this->fetchAll($this->queryOnArticle($article_id), [], 0, PDO::FETCH_GROUP|PDO::FETCH_UNIQUE);
+        return $this->fetchAll($this->queryOnArticle($article_id), $filters = [], $limit = 0, $offset = 0, PDO::FETCH_GROUP|PDO::FETCH_UNIQUE);
     }
 }

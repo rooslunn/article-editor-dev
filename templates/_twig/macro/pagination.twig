@@ -1,0 +1,43 @@
+{% macro paginate(total, current, url, nearbyPagesLimit = 4) %}
+    {% spaceless %}
+        {% if total > 1 %}
+            <style>
+                .pagination {
+                    display: inline-block;
+                    list-style-type: none;
+                }
+                .pagination > .page-item {
+                    color: black;
+                    float: left;
+                    padding: 8px 16px;
+                    text-decoration: none;
+                }
+            </style>
+            <ul class="pagination">
+                {% for i in 1..total %}
+                    {% if 0 == (current - nearbyPagesLimit) - loop.index %}
+                        <li class="page-item"><a class="page-link" href="{{ (url ~ 1)|e }}">1</a></li>
+                        {% if 1 != loop.index %}
+                            <li class="page-item"><span>…</span></li>
+                        {% endif %}
+                    {% elseif 0 == (current + nearbyPagesLimit) - loop.index  and (current + nearbyPagesLimit) < total %}
+                        <li class="page-item"><span>…</span></li>
+                    {% elseif 0 < (current - nearbyPagesLimit) - loop.index %}
+                    {% elseif 0 > (current + nearbyPagesLimit) - loop.index %}
+                    {% else %}
+                        <li class="page-item" {{ current == loop.index ? 'class="active"' }}>
+                            {% if current == loop.index  %}
+                                <span>{{ loop.index }}</span>
+                            {% else %}
+                                <a href="{{ url ~ loop.index }}" class="page-link">{{ loop.index }}</a>
+                            {% endif %}
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                {% if current != total  and (current + nearbyPagesLimit) < total %}
+                    <li class="page-item"><a class="page-link" href="{{ (url ~ total)|e }}">{{ total }}</a></li>
+                {% endif %}
+            </ul>
+        {% endif %}
+    {% endspaceless %}
+{% endmacro %}

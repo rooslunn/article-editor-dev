@@ -84,7 +84,7 @@ final class ArticleRepository extends Repository
         return Article::create($data);
     }
 
-    public function filterBy(array $filters)
+    public function filterBy(array $filters, $page = 1, $per_page = 15)
     {
         $query_filters = [];
 
@@ -98,7 +98,11 @@ final class ArticleRepository extends Repository
             }
         }
 
-        return $this->fetchAll($this->queryShort(), $query_filters);
+        if ($page === 0) {
+            return $this->fetchAll($this->queryShort(), $query_filters);
+        }
+
+        return $this->forPage($this->queryShort(), $query_filters, $page, $per_page);
     }
 
 }
