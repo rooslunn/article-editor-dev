@@ -83,7 +83,6 @@ class article_editor_controller {
         $timings['03-sections'] = microtime(true) - $end;
         $end = microtime(true);
 
-        $timings['04-permissions'] = microtime(true) - $end;
         $timings['05-request'] = microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'];
 
         $timings_json = json_encode($timings);
@@ -113,7 +112,7 @@ class article_editor_controller {
         $article = (new ArticleRepository())->findOrNew($article_id);
 
         display('editor',
-            compact('article', 'article_check', 'doc_types', 'permissions', 'sections',
+            compact('article', 'article_check', 'doc_types', 'sections',
                 'statuses', 'locales', 'resellers')
         );
     }
@@ -126,35 +125,6 @@ class article_editor_controller {
         $article = (new ArticleRepository())->articleId($article_id);
         redirect(PREVIEW_LOCATION . $article['article_url'] . '/?debug=1');
     }
-
-	public function new_articles_list() {
-		if (input::has('article_id')) {
-			if (input::get('section_name') != '') {
-				$replace = preg_replace('/\-/', ' ', input::get('section_name'));
-			} else {
-				$replace = self::SEARCH_RESULTS;
-			}
-
-			$this->_template->loadTemplateFile('templates/article_list.tpl');
-			$this->_template->setVariable('current_section_name', $replace);
-			$this->parse_sections()->get_articles();
-		} else {
-			$this->_template->loadTemplateFile('templates/new_articles_list.tpl');
-			$this->parse_sections()->get_new_articles('new', 0);
-		}
-
-		if (crms_user::check_current_permissions('ARTICLE_TOOL_PUBLISHER_ROLE')) {
-			$this->_template->touchBlock('publish_role');
-		} else if (crms_user::check_current_permissions('ARTICLE_TOOL_EDITOR_ROLE')) {
-			$this->_template->touchBlock('edit_role');
-			$this->_template->hideBlock('publish_role');
-		} else {
-			$this->_template->hideBlock('edit_role');
-			$this->_template->hideBlock('edit_role_footer');
-		}
-
-		$this->_template->show();
-	}
 
 	public function articles_missing_tags_list() {
 		if (input::has('article_id')) {

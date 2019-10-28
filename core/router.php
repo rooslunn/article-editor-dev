@@ -43,10 +43,8 @@ class router {
             self::$_root_path . 'preview' => 'article_editor_controller@preview',
 
 		    /* todo: Routes	 */
-			self::$_root_path . 'new_articles_list' => 'article_editor_controller@new_articles_list',
 			self::$_root_path . 'article_list_status' => 'article_editor_controller@article_list_status',
 			self::$_root_path . 'articles_missing_tags_list' => 'article_editor_controller@articles_missing_tags_list',
-			self::$_root_path . 'last_updated_articles_list' => 'article_editor_controller@last_updated_articles_list',
 
 			self::$_root_path . 'get_image' => 'article_editor_controller@get_image',
 			self::$_root_path . 'article_comments' => 'article_editor_controller@article_comments',
