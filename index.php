@@ -75,7 +75,7 @@ foreach ($twig_ext_filters as $name => $closure) {
 }
 
 $twig->addGlobal('permissions', ACL::roles());
-$twig->addGlobal('PREVIEW_LOCATION', PREVIEW_LOCATION);
+$twig->addGlobal('PREVIEW_LOCATION', $location = PREVIEW_LOCATION);
 
 app()->bind('twig', $twig);
 

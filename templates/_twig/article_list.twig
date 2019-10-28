@@ -28,7 +28,7 @@
                 {% if permissions.ARTICLE_TOOL_EDITOR_ROLE %}
                     <a target="_blank" href="edit?article_id={{ item.article_id }}">{{ item.article_id }}</a>
                 {% else %}
-                    <a target="_blank" href="{{ PREVIEW_LOCAION . item.article_url }}/?debug=1">{{ item.article_id }}</a>
+                    <a target="_blank" href="{{ PREVIEW_LOCATION . item.article_url }}/?debug=1">{{ item.article_id }}</a>
                 {% endif %}
             </td>
             <td class="name">
