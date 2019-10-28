@@ -36,18 +36,19 @@ class router {
 	private static function _get_routes() {
 		/* List of routes here */
 		return array(
-			rtrim(self::$_root_path, '/') => 'article_editor_controller@index_dev',
-            self::$_root_path . 'article_list' => 'article_editor_controller@article_list_dev',
-            self::$_root_path . 'organizer' => 'article_editor_controller@organizer_dev',
+			rtrim(self::$_root_path, '/') => 'article_editor_controller@index',
+            self::$_root_path . 'article_list' => 'article_editor_controller@article_list',
+            self::$_root_path . 'organizer' => 'article_editor_controller@organizer',
+			self::$_root_path . 'edit' => 'article_editor_controller@edit',
+            self::$_root_path . 'preview' => 'article_editor_controller@preview',
 
-			self::$_root_path . 'edit' => 'article_editor_controller@edit_dev',
-
+		    /* todo: Routes	 */
 			self::$_root_path . 'new_articles_list' => 'article_editor_controller@new_articles_list',
 			self::$_root_path . 'article_list_status' => 'article_editor_controller@article_list_status',
 			self::$_root_path . 'articles_missing_tags_list' => 'article_editor_controller@articles_missing_tags_list',
 			self::$_root_path . 'last_updated_articles_list' => 'article_editor_controller@last_updated_articles_list',
+
 			self::$_root_path . 'get_image' => 'article_editor_controller@get_image',
-			self::$_root_path . 'preview' => 'article_editor_controller@preview',
 			self::$_root_path . 'article_comments' => 'article_editor_controller@article_comments',
 
 			self::$_root_path . 'ajax/update_status' => 'article_editor_controller@update_status',

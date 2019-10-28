@@ -71,4 +71,9 @@ final class Article implements ModelContract
 
         return $data;
     }
+
+    public static function filterId($article_id)
+    {
+        return (int) $article_id;
+    }
 }

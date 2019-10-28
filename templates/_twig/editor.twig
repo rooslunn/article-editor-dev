@@ -98,8 +98,9 @@
                     </div>
 
                     <button id="save" style="width: 120px;">Save</button>
-                    <button id="preview" style="width: 120px;" onclick="window.open('preview?id={{ article.article_id }}');"
-                            data-preview-link="preview?id={{ article.article_id }}">
+                    <button id="preview" style="width: 120px;"
+                            onclick="window.open('preview?article_id={{ article.article_id }}');"
+                            data-preview-link="preview?article_id={{ article.article_id }}">
                         Preview
                     </button>
                 </fieldset>
