@@ -83,13 +83,12 @@ class article_editor_controller {
         $timings['03-sections'] = microtime(true) - $end;
         $end = microtime(true);
 
-        $permissions = ACL::roles();
         $timings['04-permissions'] = microtime(true) - $end;
         $timings['05-request'] = microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'];
 
         $timings_json = json_encode($timings);
 
-        display('article_list', compact('sections', 'section_title', 'articles', 'permissions', 'timings_json'));
+        display('article_list', compact('sections', 'section_title', 'articles', 'timings_json'));
     }
 
     public function organizer()
@@ -103,7 +102,6 @@ class article_editor_controller {
 
         $article_id = Article::filterId(input::get('article_id'));
 
-        $permissions = ACL::roles();
         $sections = (new SectionRepository())->getAll();
         $statuses = (new ArticleStatusRepository())->getAll();
 

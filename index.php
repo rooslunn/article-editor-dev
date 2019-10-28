@@ -1,5 +1,7 @@
 <?php
 
+use Dreamscape\Foundation\ACL;
+
 error_reporting(E_ALL);
 
 /* Loading configs */
@@ -71,6 +73,10 @@ foreach ($twig_ext_funcs as $name => $closure) {
 foreach ($twig_ext_filters as $name => $closure) {
     $twig->addFilter(new \Twig\TwigFilter($name, $closure));
 }
+
+$twig->addGlobal('permissions', ACL::roles());
+$twig->addGlobal('PREVIEW_LOCATION', PREVIEW_LOCATION);
+
 app()->bind('twig', $twig);
 
 /*

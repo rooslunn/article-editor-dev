@@ -31,7 +31,7 @@ final class Article implements ModelContract
         ];
     }
 
-    private static function convertDates(array &$data)
+    private static function carbonDates(array &$data)
     {
         foreach (self::DATES as $field_name) {
             if ($data[$field_name] === self::MYSQL_ZERO_DATE) {
@@ -46,16 +46,16 @@ final class Article implements ModelContract
     {
         $data['action'] = self::MODEL_UPDATE_ACTION;
 
-        /* todo: I don't know WTF this for... */
+        /* todo: I don't know WTF this is for... */
         $data['article_tags'] = $data['section_title'] ?: $data['article_tags'];
         $data['section_name'] = str_replace(' ', '-', $data['article_tags']);
         $data['article_tags'] .= !$data['section_title'] ? '(uncategorized)' : '';
 
-        self::convertDates($data);
+        self::carbonDates($data);
 
         $data['article_input_title'] = $data['article_title'];
-        $data['search_tags_count'] = count($data['article_search_tags']);
-        $data['article_search_tags'] = implode("\n", $data['article_search_tags']);
+        $data['search_tags_count'] = 0; //count($data['article_search_tags']);
+        $data['article_search_tags'] = ''; //implode("\n", $data['article_search_tags']);
 
         $data['related_sections'] = (new ArticleToSectionRepository())->belongsToArtcile($data['article_id']);
         $data['article_images'] = (new ArticleImagesRepository())->belongsToArtcile($data['article_id']);
