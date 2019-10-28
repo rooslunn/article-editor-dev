@@ -83,11 +83,13 @@ class article_editor_controller {
         $timings['03-sections'] = microtime(true) - $end;
         $end = microtime(true);
 
-        $timings['05-request'] = microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'];
-
         $timings_json = json_encode($timings);
 
-        display('article_list', compact('sections', 'section_title', 'articles', 'timings_json'));
+        $view = view('article_list', compact('sections', 'section_title', 'articles', 'timings_json'));
+        $timings['06-render'] = microtime(true) - $end;
+        echo $view;
+
+//        display('article_list', compact('sections', 'section_title', 'articles', 'timings_json'));
     }
 
     public function organizer()
