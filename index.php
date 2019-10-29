@@ -4,6 +4,8 @@ use Dreamscape\Foundation\ACL;
 
 error_reporting(E_ALL);
 
+/* todo: move to app/bootstrap-legacy.php */
+
 /* Loading configs */
 require_once('/home/system/public_html/common/includes/config.php');
 require_once('../../crms/includes/config.php');
@@ -46,6 +48,9 @@ require __DIR__.'/vendor/autoload.php';
 /*
  * Shared DB
  */
+
+/* todo: move to bootstrap/app.php */
+
 app()->bind('db', new \Dreamscape\Database\DatabaseContracted(DB_SERVER, DB_SERVER_USERNAME, DB_SERVER_PASSWORD, DB_NAME));
 
 /* Twig */
